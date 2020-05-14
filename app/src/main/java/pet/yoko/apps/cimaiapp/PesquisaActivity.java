@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ public class PesquisaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pesquisa);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.MESSAGE);
+        String message = intent.getStringExtra(MainActivity.ANO);
         TextView ano = (TextView) (findViewById(R.id.txtAno));
         ano.setText(message);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -63,7 +64,19 @@ public class PesquisaActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
+
+    public int getAno() {
+        int ano = 2019;
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(MainActivity.ANO);
+        try {
+            ano = Integer.parseInt(message);
+        }
+        catch (NumberFormatException e) {
+            ano = 2020;
+        }
+        return (ano);
+    }
+
 }

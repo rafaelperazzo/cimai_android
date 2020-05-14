@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CimaiApp</string>
+    <string name="app_name">CIMAI/PROPLAN/UFCA</string>
     <string name="txtEnsino">ENSINO</string>
     <string-array name="anos_array">
         <item>2013</item>

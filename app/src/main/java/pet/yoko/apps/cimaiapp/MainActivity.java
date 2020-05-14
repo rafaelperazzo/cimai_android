@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String MESSAGE = "";
+    public static final String ANO = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +22,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PesquisaActivity.class);
         Spinner ano = (Spinner)findViewById(R.id.cmbAno);
         String sAno = ano.getSelectedItem().toString();
-        intent.putExtra(MESSAGE,sAno);
+        intent.putExtra(ANO,sAno);
         startActivity(intent);
+    }
+
+    public void ensinoClick(View view) {
+
     }
 }

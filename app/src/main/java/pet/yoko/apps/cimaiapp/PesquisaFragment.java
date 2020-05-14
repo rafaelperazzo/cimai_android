@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 
 /**
@@ -14,7 +18,7 @@ import android.view.ViewGroup;
  * Use the {@link PesquisaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PesquisaFragment extends Fragment {
+public class PesquisaFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,6 +27,10 @@ public class PesquisaFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    ProgressBar progresso;
+    WebView webView;
+    int ano = 0;
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -53,12 +61,54 @@ public class PesquisaFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pesquisa, container, false);
+        View view = inflater.inflate(R.layout.fragment_pesquisa, container, false);
+        PesquisaActivity activity = (PesquisaActivity) getActivity();
+        ano = activity.getAno();
+        Button porArea = (Button)view.findViewById(R.id.btnArea);
+        progresso = (ProgressBar)view.findViewById(R.id.progresso);
+        progresso.setVisibility(View.INVISIBLE);
+        webView = (WebView) view.findViewById(R.id.webview);
+        porArea.setOnClickListener(this);
+        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.btnArea:
+                this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
+                /*
+                progresso.setVisibility(View.VISIBLE);
+                //webView.setWebViewClient(new WebViewClient());
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        progresso.setVisibility(View.GONE);
+                    }
+                });
+                webView.loadUrl("https://apps.yoko.pet/cimai/pesquisa?ano=2016");
+                */
+                break;
+        }
+    }
+
+    public void ajustarProgresso(WebView webView, final ProgressBar progresso, String URL) {
+        progresso.setVisibility(View.VISIBLE);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                progresso.setVisibility(View.GONE);
+            }
+        });
+        webView.loadUrl(URL);
     }
 }

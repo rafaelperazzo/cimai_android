@@ -32,7 +32,7 @@ public class TabPesquisaActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab);
         TextView ano = (TextView) findViewById(R.id.title);
-        String valorAno = getIntent().getStringExtra(MainActivity.MESSAGE);
+        String valorAno = getIntent().getStringExtra(MainActivity.ANO);
         ano.setText(valorAno);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
