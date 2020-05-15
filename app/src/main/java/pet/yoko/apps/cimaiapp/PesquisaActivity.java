@@ -9,19 +9,38 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class PesquisaActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class PesquisaActivity extends AppCompatActivity {
+    String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
+    ProgressBar progressoMainPesquisa;
+    TextView periodicos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesquisa);
+        setTitle("PESQUISA");
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
+        progressoMainPesquisa = (ProgressBar)findViewById(R.id.progressoPesquisaMain);
+        progressoMainPesquisa.setVisibility(View.VISIBLE);
+        periodicos = (TextView)findViewById(R.id.txtPeriodicos);
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.ANO);
+        url = url + message;
         TextView ano = (TextView) (findViewById(R.id.txtAno));
         ano.setText(message);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -64,6 +83,12 @@ public class PesquisaActivity extends AppCompatActivity {
 
             }
         });
+        /*
+        try {
+            run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public int getAno() {
@@ -77,6 +102,51 @@ public class PesquisaActivity extends AppCompatActivity {
             ano = 2020;
         }
         return (ano);
+    }
+
+    void run() throws IOException {
+        progressoMainPesquisa.setVisibility(View.VISIBLE);
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                progressoMainPesquisa.setVisibility(View.GONE);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                PesquisaActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject obj = new JSONObject(myResponse);
+                            //periodicos.setText(obj.getString("periodicos"));
+                            //suspeitos.setText(obj.getString("suspeitos"));
+                            //obitos.setText(obj.getString("obitos"));
+                            //double dblTaxa = obj.getDouble("taxa");
+                            //String strTaxa = String.format("%.2f",dblTaxa);
+                            //taxa.setText(strTaxa);
+                            //String data = obj.getString("atualizacao");
+                            //atualizacao.setText(data);
+                            //confirmacoes.setText(obj.getString("confirmacoes"));
+                            progressoMainPesquisa.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
 }
