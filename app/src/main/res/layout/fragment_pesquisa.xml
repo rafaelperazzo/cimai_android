@@ -144,19 +144,11 @@
         android:layout_height="34dp"
         tools:visibility="invisible" />
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/porProducoesChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="visible">
-
-    </com.github.mikephil.charting.charts.HorizontalBarChart>
-
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
     </WebView>
 

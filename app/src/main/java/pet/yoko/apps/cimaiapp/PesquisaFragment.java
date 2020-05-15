@@ -70,6 +70,9 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     TextView livros;
     TextView atualizacao;
     public static final String TIPO = "";
+    public static final String TABELA = "producoesDados";
+    public static final String ANO = "";
+    public static final String TITULO = "";
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -125,21 +128,6 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         capitulos = (TextView)view.findViewById(R.id.txtCapitulos);
         livros = (TextView)view.findViewById(R.id.txtLivros);
         atualizacao = (TextView)view.findViewById(R.id.txtAtualizacao);
-        /*
-        BarChart porProducaoChart = view.findViewById(R.id.porProducoesChart);
-        ArrayList<BarEntry> porProducoes = new ArrayList<>();
-        porProducoes.add(new BarEntry(1,204));
-        porProducoes.add(new BarEntry(2,70));
-        BarDataSet barDataSet = new BarDataSet(porProducoes,"Por produção");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
-        BarData barData = new BarData(barDataSet);
-        porProducaoChart.setFitBars(true);
-        porProducaoChart.setData(barData);
-        porProducaoChart.getDescription().setText("Por Produção");
-        porProducaoChart.animateY(2000);
-        */
         Button porArea = (Button)view.findViewById(R.id.btnArea);
         porArea.setOnClickListener(this);
         Button porProducao = (Button)view.findViewById(R.id.btnPorProducao);
@@ -152,6 +140,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        PesquisaActivity activity = (PesquisaActivity) getActivity();
         switch (view.getId()) {
             case R.id.btnArea:
                 //this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
@@ -159,6 +148,9 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
             case R.id.btnPorProducao:
                 Intent intent =  new Intent(getActivity(),PesquisaChartActivity.class);
                 intent.putExtra(TIPO,"porProducao");
+                intent.putExtra(TABELA,"producoesDados");
+                intent.putExtra(TITULO,"Por tipo de produção");
+                intent.putExtra(ANO,String.valueOf(activity.getAno()));
                 startActivity(intent);
                 break;
         }

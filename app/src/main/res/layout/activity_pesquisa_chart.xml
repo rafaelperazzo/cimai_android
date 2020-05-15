@@ -7,12 +7,18 @@
     android:orientation="vertical"
     tools:context=".PesquisaChartActivity">
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
+    <ProgressBar
+        android:id="@+id/progressoGrafico"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/porProducoesChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:visibility="visible">
 
-    </com.github.mikephil.charting.charts.HorizontalBarChart>
+    </com.github.mikephil.charting.charts.BarChart>
 
 </LinearLayout>
