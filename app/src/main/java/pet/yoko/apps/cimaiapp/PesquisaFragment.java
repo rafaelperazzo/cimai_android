@@ -1,5 +1,16 @@
 package pet.yoko.apps.cimaiapp;
+/*
+<com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/porProducoesChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="visible">
 
+    </com.github.mikephil.charting.charts.HorizontalBarChart>
+
+ */
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,11 +24,18 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -43,7 +61,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
 
     ProgressBar progresso;
     ProgressBar progressoMain;
-    WebView webView;
+    //WebView webView;
     int ano = 0;
     String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
     TextView periodicos;
@@ -51,6 +69,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     TextView capitulos;
     TextView livros;
     TextView atualizacao;
+    public static final String TIPO = "";
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -106,11 +125,28 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         capitulos = (TextView)view.findViewById(R.id.txtCapitulos);
         livros = (TextView)view.findViewById(R.id.txtLivros);
         atualizacao = (TextView)view.findViewById(R.id.txtAtualizacao);
+        /*
+        BarChart porProducaoChart = view.findViewById(R.id.porProducoesChart);
+        ArrayList<BarEntry> porProducoes = new ArrayList<>();
+        porProducoes.add(new BarEntry(1,204));
+        porProducoes.add(new BarEntry(2,70));
+        BarDataSet barDataSet = new BarDataSet(porProducoes,"Por produção");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+        BarData barData = new BarData(barDataSet);
+        porProducaoChart.setFitBars(true);
+        porProducaoChart.setData(barData);
+        porProducaoChart.getDescription().setText("Por Produção");
+        porProducaoChart.animateY(2000);
+        */
         Button porArea = (Button)view.findViewById(R.id.btnArea);
+        porArea.setOnClickListener(this);
+        Button porProducao = (Button)view.findViewById(R.id.btnPorProducao);
+        porProducao.setOnClickListener(this);
         progresso = (ProgressBar)view.findViewById(R.id.progresso);
         progresso.setVisibility(View.INVISIBLE);
-        webView = (WebView) view.findViewById(R.id.webview);
-        porArea.setOnClickListener(this);
+        //webView = (WebView) view.findViewById(R.id.webview);
         return view;
     }
 
@@ -118,7 +154,12 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnArea:
-                this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
+                //this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
+                break;
+            case R.id.btnPorProducao:
+                Intent intent =  new Intent(getActivity(),PesquisaChartActivity.class);
+                intent.putExtra(TIPO,"porProducao");
+                startActivity(intent);
                 break;
         }
     }

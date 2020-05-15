@@ -108,7 +108,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnPorProducao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -144,10 +144,20 @@
         android:layout_height="34dp"
         tools:visibility="invisible" />
 
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/porProducoesChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="visible">
+
+    </com.github.mikephil.charting.charts.HorizontalBarChart>
+
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:visibility="visible" />
+        tools:visibility="gone">
+
+    </WebView>
 
 </LinearLayout>
