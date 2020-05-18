@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".PesquisaFragment">
 
+    <Spinner
+        android:id="@+id/spinAno"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:entries="@array/anos_array"
+        android:gravity="center_horizontal|center_vertical"
+        android:textAlignment="viewEnd" />
+
     <TextView
         android:id="@+id/txtAtualizacao"
         android:layout_width="match_parent"
@@ -144,12 +152,9 @@
         android:layout_height="34dp"
         tools:visibility="invisible" />
 
-    <WebView
-        android:id="@+id/webview"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="visible">
+        android:layout_height="match_parent" />
 
-    </WebView>
 
 </LinearLayout>

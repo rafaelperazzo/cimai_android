@@ -83,12 +83,7 @@ public class PesquisaActivity extends AppCompatActivity {
 
             }
         });
-        /*
-        try {
-            run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
     }
 
     public int getAno() {
@@ -102,51 +97,6 @@ public class PesquisaActivity extends AppCompatActivity {
             ano = 2020;
         }
         return (ano);
-    }
-
-    void run() throws IOException {
-        progressoMainPesquisa.setVisibility(View.VISIBLE);
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                progressoMainPesquisa.setVisibility(View.GONE);
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                final String myResponse = response.body().string();
-
-                PesquisaActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject obj = new JSONObject(myResponse);
-                            //periodicos.setText(obj.getString("periodicos"));
-                            //suspeitos.setText(obj.getString("suspeitos"));
-                            //obitos.setText(obj.getString("obitos"));
-                            //double dblTaxa = obj.getDouble("taxa");
-                            //String strTaxa = String.format("%.2f",dblTaxa);
-                            //taxa.setText(strTaxa);
-                            //String data = obj.getString("atualizacao");
-                            //atualizacao.setText(data);
-                            //confirmacoes.setText(obj.getString("confirmacoes"));
-                            progressoMainPesquisa.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-            }
-        });
     }
 
 }

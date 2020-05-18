@@ -9,8 +9,9 @@ package pet.yoko.apps.cimaiapp;
     </com.github.mikephil.charting.charts.HorizontalBarChart>
 
  */
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,22 +21,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -64,15 +63,17 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     //WebView webView;
     int ano = 0;
     String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
+    String url_base = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
     TextView periodicos;
     TextView anais;
     TextView capitulos;
     TextView livros;
     TextView atualizacao;
-    public static final String TIPO = "";
+    Spinner spinAno;
+    public static final String TIPO = "porTipoProducao";
     public static final String TABELA = "producoesDados";
-    public static final String ANO = "";
-    public static final String TITULO = "";
+    public static final String ANO = "2019";
+    public static final String TITULO = "GRAFICO";
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -113,13 +114,14 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pesquisa, container, false);
         PesquisaActivity activity = (PesquisaActivity) getActivity();
-        ano = activity.getAno();
-        String sAno = String.valueOf(ano);
-        url = url + sAno;
+        spinAno = (Spinner)view.findViewById(R.id.spinAno);
+        String sAno = spinAno.getSelectedItem().toString();
+        ano = Integer.parseInt(sAno);
+        url = url_base + sAno;
         progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
         progressoMain.setVisibility(View.VISIBLE);
         try {
-            run();
+            run(url_base + sAno);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,10 +130,32 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         capitulos = (TextView)view.findViewById(R.id.txtCapitulos);
         livros = (TextView)view.findViewById(R.id.txtLivros);
         atualizacao = (TextView)view.findViewById(R.id.txtAtualizacao);
+
+        spinAno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String anoSelecionado = parentView.getItemAtPosition(position).toString();
+                try {
+                    run(url_base + anoSelecionado);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+
+        });
         Button porArea = (Button)view.findViewById(R.id.btnArea);
         porArea.setOnClickListener(this);
         Button porProducao = (Button)view.findViewById(R.id.btnPorProducao);
         porProducao.setOnClickListener(this);
+        Button porGrandeArea = (Button)view.findViewById(R.id.btnGrandeArea);
+        porGrandeArea.setOnClickListener(this);
+        Button porBolsistaPq = (Button)view.findViewById(R.id.btnBolsistas);
+        porBolsistaPq.setOnClickListener(this);
         progresso = (ProgressBar)view.findViewById(R.id.progresso);
         progresso.setVisibility(View.INVISIBLE);
         //webView = (WebView) view.findViewById(R.id.webview);
@@ -141,16 +165,35 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         PesquisaActivity activity = (PesquisaActivity) getActivity();
+        Intent intent =  new Intent(getContext(),PesquisaChartActivity.class);
         switch (view.getId()) {
             case R.id.btnArea:
                 //this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
+                intent.putExtra(TIPO,"porArea");
+                intent.putExtra(TABELA,"producoesDados");
+                intent.putExtra(TITULO,"Por Área");
+                intent.putExtra(ANO,spinAno.getSelectedItem().toString());
+                startActivity(intent);
+                break;
+            case R.id.btnGrandeArea:
+                intent.putExtra(TIPO,"porGrandeArea");
+                intent.putExtra(TABELA,"producoesDados");
+                intent.putExtra(TITULO,"Por Grande Área");
+                intent.putExtra(ANO,spinAno.getSelectedItem().toString());
+                startActivity(intent);
+                break;
+            case R.id.btnBolsistas:
+                intent.putExtra(TIPO,"porBolsistaPq");
+                intent.putExtra(TABELA,"producoesDados");
+                intent.putExtra(TITULO,"Por Bolsista PQ");
+                intent.putExtra(ANO,spinAno.getSelectedItem().toString());
+                startActivity(intent);
                 break;
             case R.id.btnPorProducao:
-                Intent intent =  new Intent(getActivity(),PesquisaChartActivity.class);
-                intent.putExtra(TIPO,"porProducao");
+                intent.putExtra(TIPO,"porTipoProducao");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por tipo de produção");
-                intent.putExtra(ANO,String.valueOf(activity.getAno()));
+                intent.putExtra(ANO,spinAno.getSelectedItem().toString());
                 startActivity(intent);
                 break;
         }
@@ -167,7 +210,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         webView.loadUrl(URL);
     }
 
-    void run() throws IOException {
+    void run(String url) throws IOException {
 
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
