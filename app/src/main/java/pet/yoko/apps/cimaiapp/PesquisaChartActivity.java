@@ -48,17 +48,24 @@ public class PesquisaChartActivity extends AppCompatActivity {
     String URL;
     BarChart grafico;
     String TITULO_GRAFICO;
+    String ANO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesquisa_chart);
         Intent intent = getIntent();
         String TIPO = intent.getStringExtra(PesquisaFragment.TIPO);
-        String ANO = intent.getStringExtra(PesquisaFragment.ANO);
+        ANO = intent.getStringExtra(PesquisaFragment.ANO);
         String TABELA = intent.getStringExtra(PesquisaFragment.TABELA);
         String TITULO = intent.getStringExtra(PesquisaFragment.TITULO);
         TITULO_GRAFICO = TITULO;
-        setTitle(TITULO + " - " + ANO);
+        if (Integer.parseInt(ANO)!=0) {
+            setTitle(TITULO + " - " + ANO);
+        }
+        else {
+            setTitle(TITULO);
+        }
+
         progresso = (ProgressBar)findViewById(R.id.progressoGrafico);
         progresso.setVisibility(View.VISIBLE);
         URL = "https://apps.yoko.pet/webapi/cimaiapi.php?ano=" + ANO + "&tabela=" + TABELA + "&tipo="+ TIPO;
@@ -115,7 +122,7 @@ public class PesquisaChartActivity extends AppCompatActivity {
         //grafico.saveToGallery("mychart.jpg", 85);
     }
 
-    public void makeChart(ArrayList<BarEntry> dados, ArrayList<String> xLabels) {
+    public void makeChart(ArrayList<BarEntry> dados, ArrayList<String> xLabels, boolean labelsX) {
         BarData barData = new BarData();
         for (int i = 0; i<dados.size();i++) {
             BarEntry linha = dados.get(i);
@@ -147,7 +154,6 @@ public class PesquisaChartActivity extends AppCompatActivity {
         xAxis.setCenterAxisLabels(true);
         //xAxis.setDrawLabels(true);
         xAxis.setLabelCount(xLabels.size());
-        //xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
         xAxis.setGranularity(1.0f);
         xAxis.setGranularityEnabled(true);
         xAxis.setLabelRotationAngle(-90);
@@ -155,6 +161,13 @@ public class PesquisaChartActivity extends AppCompatActivity {
         xAxis.setCenterAxisLabels(true);
         xAxis.setAxisMinimum(0);
         xAxis.setEnabled(false);
+        if (labelsX) {
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            l.setEnabled(false);
+            xAxis.setEnabled(true);
+            xAxis.setTextSize(20);
+        }
         YAxis yAxis = grafico.getAxisLeft();
         yAxis.setDrawGridLines(false);
         yAxis.setAxisMinimum(0);
@@ -217,7 +230,13 @@ public class PesquisaChartActivity extends AppCompatActivity {
                                 i++;
                             }
                             progresso.setVisibility(View.GONE);
-                            makeChart(valores,labels);
+                            if (Integer.parseInt(ANO)!=0) {
+                                makeChart(valores,labels,false);
+                            }
+                            else {
+                                makeChart(valores,labels,true);
+                            }
+
                         } catch (JSONException e) {
                             progresso.setVisibility(View.GONE);
                             Toast toast = Toast.makeText(getApplicationContext(),"Erro no json: " + e.getMessage(),Toast.LENGTH_LONG);

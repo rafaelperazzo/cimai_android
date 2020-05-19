@@ -84,6 +84,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     public static final String TITULO = "GRAFICO";
     ArrayList<ProducaoItem> items;
     CustomAdapter adapter;
+    TextView tituloTabela;
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -131,6 +132,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
         progressoMain.setVisibility(View.VISIBLE);
         items = new ArrayList<ProducaoItem>();
+        tituloTabela = (TextView)view.findViewById(R.id.txtTituloTabela);
         try {
             run(url_base + sAno);
         } catch (IOException e) {
@@ -153,6 +155,13 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                String url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porTipoProducao";
+                try {
+                    runTabela(url_data);
+                    tituloTabela.setText("Por tipo de produção");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -169,6 +178,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         porGrandeArea.setOnClickListener(this);
         Button porBolsistaPq = (Button)view.findViewById(R.id.btnBolsistas);
         porBolsistaPq.setOnClickListener(this);
+        periodicos.setOnClickListener(this);
         progresso = (ProgressBar)view.findViewById(R.id.progresso);
         progresso.setVisibility(View.INVISIBLE);
         //webView = (WebView) view.findViewById(R.id.webview);
@@ -189,23 +199,26 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         PesquisaActivity activity = (PesquisaActivity) getActivity();
         Intent intent =  new Intent(getContext(),PesquisaChartActivity.class);
+        String url_data;
         switch (view.getId()) {
             case R.id.btnArea:
-                //this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
-                /*
-                intent.putExtra(TIPO,"porArea");
-                intent.putExtra(TABELA,"producoesDados");
-                intent.putExtra(TITULO,"Por Área");
-                intent.putExtra(ANO,spinAno.getSelectedItem().toString());
-                startActivity(intent);*/
-                String url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porArea";
+
+                url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porArea";
                 try {
                     runTabela(url_data);
+                    tituloTabela.setText("Por área");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.btnGrandeArea:
+                url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porGrandeArea";
+                try {
+                    runTabela(url_data);
+                    tituloTabela.setText("Por grande área");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 intent.putExtra(TIPO,"porGrandeArea");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por Grande Área");
@@ -213,6 +226,13 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.btnBolsistas:
+                url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porBolsistaPq";
+                try {
+                    runTabela(url_data);
+                    tituloTabela.setText("Por bolsista de produtividade");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 intent.putExtra(TIPO,"porBolsistaPq");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por Bolsista PQ");
@@ -220,10 +240,24 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.btnPorProducao:
+                url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porTipoProducao";
+                try {
+                    runTabela(url_data);
+                    tituloTabela.setText("Por tipo de produção");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 intent.putExtra(TIPO,"porTipoProducao");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por tipo de produção");
                 intent.putExtra(ANO,spinAno.getSelectedItem().toString());
+                startActivity(intent);
+                break;
+            case R.id.txtPeriodicos:
+                intent.putExtra(TIPO,"porProducaoAno");
+                intent.putExtra(TABELA,"producoesDados");
+                intent.putExtra(TITULO,"Histórico de produções por ano");
+                intent.putExtra(ANO,"0");
                 startActivity(intent);
                 break;
         }
@@ -308,6 +342,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                     public void run() {
                         try {
                             JSONObject obj = new JSONObject(myResponse);
+                            items.clear();
                             for(Iterator<String> keys = obj.keys(); keys.hasNext();) {
                                 String chave = keys.next();
                                 int valor = obj.getInt(chave);
