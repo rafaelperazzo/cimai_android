@@ -178,6 +178,8 @@ public class PesquisaChartActivity extends AppCompatActivity {
                 return(format.format(value));
             }
         });
+        yAxis.setGranularity(1.0f);
+        yAxis.setGranularityEnabled(true);
         yAxis.setEnabled(false);
         //yAxis.setDrawLabels(true);
         grafico.getAxisRight().setDrawGridLines(false);
@@ -190,7 +192,7 @@ public class PesquisaChartActivity extends AppCompatActivity {
         grafico.groupBars(0f,0f,0.06f);
         grafico.invalidate();
         grafico.setSaveEnabled(true);
-        grafico.saveToGallery("mychart.jpg", 85);
+
     }
 
     void run() throws IOException {
@@ -258,5 +260,6 @@ public class PesquisaChartActivity extends AppCompatActivity {
         shareIntent.setType("image/jpeg");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
         */
+        grafico.saveToGallery("mychart.jpg",85);
     }
 }

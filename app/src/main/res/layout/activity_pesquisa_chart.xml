@@ -23,6 +23,7 @@
             android:layout_width="135dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="shareClick"
             app:srcCompat="?attr/actionModeShareDrawable" />
     </LinearLayout>
 
