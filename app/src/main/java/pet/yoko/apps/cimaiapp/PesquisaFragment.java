@@ -15,6 +15,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +38,9 @@ import org.json.JSONObject;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 import okhttp3.Call;
@@ -64,6 +71,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     int ano = 0;
     String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
     String url_base = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
+    String url_base_tabelas = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoesDados&";
     TextView periodicos;
     TextView anais;
     TextView capitulos;
@@ -74,6 +82,8 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     public static final String TABELA = "producoesDados";
     public static final String ANO = "2019";
     public static final String TITULO = "GRAFICO";
+    ArrayList<ProducaoItem> items;
+    CustomAdapter adapter;
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -120,6 +130,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         url = url_base + sAno;
         progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
         progressoMain.setVisibility(View.VISIBLE);
+        items = new ArrayList<ProducaoItem>();
         try {
             run(url_base + sAno);
         } catch (IOException e) {
@@ -136,6 +147,8 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String anoSelecionado = parentView.getItemAtPosition(position).toString();
                 try {
+                    TextView anoMain = (TextView)getActivity().findViewById(R.id.txtAno);
+                    anoMain.setText(anoSelecionado);
                     run(url_base + anoSelecionado);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -159,6 +172,16 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         progresso = (ProgressBar)view.findViewById(R.id.progresso);
         progresso.setVisibility(View.INVISIBLE);
         //webView = (WebView) view.findViewById(R.id.webview);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.tabela);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        adapter = new CustomAdapter(items);
+        recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecor);
         return view;
     }
 
@@ -169,11 +192,18 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.btnArea:
                 //this.ajustarProgresso(webView,progresso,"https://apps.yoko.pet/cimai/pesquisa?ano=" + String.valueOf(ano));
+                /*
                 intent.putExtra(TIPO,"porArea");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por Área");
                 intent.putExtra(ANO,spinAno.getSelectedItem().toString());
-                startActivity(intent);
+                startActivity(intent);*/
+                String url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porArea";
+                try {
+                    runTabela(url_data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.btnGrandeArea:
                 intent.putExtra(TIPO,"porGrandeArea");
@@ -241,6 +271,49 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                             capitulos.setText(obj.getString("capitulos"));
                             livros.setText(obj.getString("livros"));
                             atualizacao.setText("Atualizado: " + obj.getString("atualizacao"));
+                            progressoMain.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+    void runTabela(String url) throws IOException {
+
+        progressoMain.setVisibility(View.VISIBLE);
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                progressoMain.setVisibility(View.GONE);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject obj = new JSONObject(myResponse);
+                            for(Iterator<String> keys = obj.keys(); keys.hasNext();) {
+                                String chave = keys.next();
+                                int valor = obj.getInt(chave);
+                                items.add(new ProducaoItem(chave,valor));
+                            }
+                            adapter.notifyDataSetChanged();
                             progressoMain.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
