@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter <CustomAdapter.ViewHolder> {
@@ -15,11 +17,13 @@ public class CustomAdapter extends RecyclerView.Adapter <CustomAdapter.ViewHolde
 
         public TextView descricao;
         public TextView quantidade;
+        public TextView percentual;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             descricao = (TextView)itemView.findViewById(R.id.colunaDescricao);
             quantidade = (TextView)itemView.findViewById(R.id.colunaQuantidade);
+            percentual = (TextView)itemView.findViewById(R.id.colunaPercentual);
         }
     }
 
@@ -46,12 +50,16 @@ public class CustomAdapter extends RecyclerView.Adapter <CustomAdapter.ViewHolde
         ProducaoItem item = items.get(position);
         TextView descricao = holder.descricao;
         TextView quantidade = holder.quantidade;
+        TextView percentual = holder.percentual;
         descricao.setText(item.descricao);
         quantidade.setText(String.valueOf(item.quantidade));
+        String percentualFormatado = new DecimalFormat("#.##").format(item.percentual);
+        percentual.setText(percentualFormatado + "%");
     }
 
     @Override
     public int getItemCount() {
+
         return items.size();
     }
 }

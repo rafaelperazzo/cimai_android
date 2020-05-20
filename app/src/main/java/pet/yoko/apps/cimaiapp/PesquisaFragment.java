@@ -30,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -331,13 +330,16 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                     public void run() {
                         try {
                             JSONObject obj = new JSONObject(myResponse);
+                            /*
                             items.clear();
                             for(Iterator<String> keys = obj.keys(); keys.hasNext();) {
                                 String chave = keys.next();
                                 int valor = obj.getInt(chave);
                                 items.add(new ProducaoItem(chave,valor));
                             }
-                            adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();*/
+                            MyTable tabela = new MyTable(obj,items,adapter);
+                            tabela.makeTable();
                             progressoMain.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
