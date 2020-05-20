@@ -240,6 +240,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
 
             case R.id.btnGrupoListaProjetos:
                 this.prepararRecycleView(recyclerView,listaGrupos,listaGruposAdapter);
+                //this.runTabela(url_dados + "tipo=listaGrupos","GrupoItem");
                 tituloTabela.setText("Lista de grupos de pesquisa");
                 break;
 
