@@ -52,9 +52,16 @@ public class CustomAdapter extends RecyclerView.Adapter <CustomAdapter.ViewHolde
         TextView quantidade = holder.quantidade;
         TextView percentual = holder.percentual;
         descricao.setText(item.descricao);
-        quantidade.setText(String.valueOf(item.quantidade));
-        String percentualFormatado = new DecimalFormat("#.##").format(item.percentual);
-        percentual.setText(percentualFormatado + "%");
+        if (item.quantidade!=-1) {
+            quantidade.setText(String.valueOf(item.quantidade));
+            String percentualFormatado = new DecimalFormat("#.##").format(item.percentual);
+            percentual.setText(percentualFormatado + "%");
+        }
+        else {
+            quantidade.setText("");
+            percentual.setText("");
+        }
+
     }
 
     @Override

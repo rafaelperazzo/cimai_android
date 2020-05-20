@@ -14,17 +14,6 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class PesquisaActivity extends AppCompatActivity {
     String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
     ProgressBar progressoMainPesquisa;

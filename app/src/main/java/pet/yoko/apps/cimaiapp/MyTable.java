@@ -50,6 +50,7 @@ public class MyTable {
             items.get(i).setPercentual(percentual);
         }
         items.add(new ProducaoItem("Total", total,100));
+        items.add(new ProducaoItem("", -1,-1));
     }
 
 }

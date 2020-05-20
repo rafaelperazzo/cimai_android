@@ -330,14 +330,6 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                     public void run() {
                         try {
                             JSONObject obj = new JSONObject(myResponse);
-                            /*
-                            items.clear();
-                            for(Iterator<String> keys = obj.keys(); keys.hasNext();) {
-                                String chave = keys.next();
-                                int valor = obj.getInt(chave);
-                                items.add(new ProducaoItem(chave,valor));
-                            }
-                            adapter.notifyDataSetChanged();*/
                             MyTable tabela = new MyTable(obj,items,adapter);
                             tabela.makeTable();
                             progressoMain.setVisibility(View.GONE);
