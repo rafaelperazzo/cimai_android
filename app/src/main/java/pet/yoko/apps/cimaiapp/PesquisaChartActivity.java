@@ -1,42 +1,18 @@
 package pet.yoko.apps.cimaiapp;
 //https://weeklycoding.com/mpandroidchart-documentation/
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ViewPortHandler;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -69,130 +45,12 @@ public class PesquisaChartActivity extends AppCompatActivity {
         progresso = (ProgressBar)findViewById(R.id.progressoGrafico);
         progresso.setVisibility(View.VISIBLE);
         URL = "https://apps.yoko.pet/webapi/cimaiapi.php?ano=" + ANO + "&tabela=" + TABELA + "&tipo="+ TIPO;
-
         grafico = findViewById(R.id.porProducoesChart);
-        //TODO: Chamar o método run()
         try {
             run();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void makeChart2(ArrayList<BarEntry> dados, ArrayList<String> xLabels) {
-        BarDataSet barDataSet = new BarDataSet(dados,"Quantidade");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(14f);
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(1);
-        grafico.setFitBars(true);
-        grafico.setData(barData);
-        XAxis xAxis = grafico.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
-        xAxis.setGranularity(1);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setLabelRotationAngle(-90);
-        xAxis.setDrawGridLines(false);
-        Random rand = new Random();
-
-        Legend l = grafico.getLegend();
-        List<LegendEntry> entries = new ArrayList<>();
-        for (int i = 0; i < xLabels.size(); i++) {
-            LegendEntry entry = new LegendEntry();
-            int r = rand.nextInt(254)+1;
-            int g = rand.nextInt(254)+1;
-            int b = rand.nextInt(254)+1;
-            int randomColor = Color.rgb(r,g,b);
-            entry.formColor = randomColor;
-            entry.label = xLabels.get(i);
-            entries.add(entry);
-        }
-        l.setCustom(entries);
-        l.setWordWrapEnabled(true);
-        l.setMaxSizePercent(0.3f);
-        //l.resetCustom();
-        l.setEnabled(true);
-
-
-        grafico.animateY(2000);
-        grafico.invalidate();
-
-        //grafico.saveToGallery("mychart.jpg", 85);
-    }
-
-    public void makeChart(ArrayList<BarEntry> dados, ArrayList<String> xLabels, boolean labelsX) {
-        BarData barData = new BarData();
-        for (int i = 0; i<dados.size();i++) {
-            BarEntry linha = dados.get(i);
-            String label = xLabels.get(i);
-            ArrayList<BarEntry> data = new ArrayList<>();
-            data.add(linha);
-            BarDataSet barDataSet = new BarDataSet(data,label);
-            //barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-            Random rand = new Random();
-            int r = rand.nextInt(254)+1;
-            int g = rand.nextInt(254)+1;
-            int b = rand.nextInt(254)+1;
-            int randomColor = Color.rgb(r,g,b);
-            barDataSet.setColors(randomColor);
-            barDataSet.setValueTextColor(Color.BLACK);
-            barDataSet.setValueTextSize(20f);
-            barData.addDataSet(barDataSet);
-        }
-
-        barData.setBarWidth(1);
-        grafico.setFitBars(true);
-        grafico.setData(barData);
-        Legend l = grafico.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setMaxSizePercent(0.3f);
-        l.setEnabled(true);
-        XAxis xAxis = grafico.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setCenterAxisLabels(true);
-        //xAxis.setDrawLabels(true);
-        xAxis.setLabelCount(xLabels.size());
-        xAxis.setGranularity(1.0f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setLabelRotationAngle(-90);
-        xAxis.setDrawGridLines(false);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setAxisMinimum(0);
-        xAxis.setEnabled(false);
-        if (labelsX) {
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            l.setEnabled(false);
-            xAxis.setEnabled(true);
-            xAxis.setTextSize(20);
-        }
-        YAxis yAxis = grafico.getAxisLeft();
-        yAxis.setDrawGridLines(false);
-        yAxis.setAxisMinimum(0);
-        yAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                DecimalFormat format = new DecimalFormat("#.####");
-                return(format.format(value));
-            }
-        });
-        yAxis.setGranularity(1.0f);
-        yAxis.setGranularityEnabled(true);
-        yAxis.setEnabled(false);
-        //yAxis.setDrawLabels(true);
-        grafico.getAxisRight().setDrawGridLines(false);
-        grafico.getAxisRight().setEnabled(false);
-        //grafico.getAxisRight().setDrawLabels(true);
-        grafico.animateY(2000);
-        grafico.setDrawBarShadow(false);
-        grafico.getDescription().setText(TITULO_GRAFICO);
-        grafico.getDescription().setEnabled(false);
-        grafico.groupBars(0f,0f,0.06f);
-        grafico.invalidate();
-        grafico.setSaveEnabled(true);
-
     }
 
     void run() throws IOException {
@@ -232,11 +90,14 @@ public class PesquisaChartActivity extends AppCompatActivity {
                                 i++;
                             }
                             progresso.setVisibility(View.GONE);
+
                             if (Integer.parseInt(ANO)!=0) {
-                                makeChart(valores,labels,false);
+                                MyChart chart = new MyChart(grafico,valores,labels,false);
+                                chart.makeChart();
                             }
                             else {
-                                makeChart(valores,labels,true);
+                                MyChart chart = new MyChart(grafico,valores,labels,true);
+                                chart.makeChart();
                             }
 
                         } catch (JSONException e) {

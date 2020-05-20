@@ -9,17 +9,13 @@ package pet.yoko.apps.cimaiapp;
     </com.github.mikephil.charting.charts.HorizontalBarChart>
 
  */
-import android.content.Context;
+
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,25 +26,16 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +54,6 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
 
     ProgressBar progresso;
     ProgressBar progressoMain;
-    //WebView webView;
     int ano = 0;
     String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
     String url_base = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
@@ -131,18 +117,21 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         url = url_base + sAno;
         progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
         progressoMain.setVisibility(View.VISIBLE);
+
         items = new ArrayList<ProducaoItem>();
         tituloTabela = (TextView)view.findViewById(R.id.txtTituloTabela);
-        try {
-            run(url_base + sAno);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         periodicos = (TextView)view.findViewById(R.id.txtPeriodicos);
         anais = (TextView)view.findViewById(R.id.txtAnais);
         capitulos = (TextView)view.findViewById(R.id.txtCapitulos);
         livros = (TextView)view.findViewById(R.id.txtLivros);
         atualizacao = (TextView)view.findViewById(R.id.txtAtualizacao);
+
+        try {
+            run(url_base + sAno);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         spinAno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -170,6 +159,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
             }
 
         });
+
         Button porArea = (Button)view.findViewById(R.id.btnArea);
         porArea.setOnClickListener(this);
         Button porProducao = (Button)view.findViewById(R.id.btnPorProducao);
@@ -179,13 +169,12 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         Button porBolsistaPq = (Button)view.findViewById(R.id.btnBolsistas);
         porBolsistaPq.setOnClickListener(this);
         periodicos.setOnClickListener(this);
+
         progresso = (ProgressBar)view.findViewById(R.id.progresso);
         progresso.setVisibility(View.INVISIBLE);
-        //webView = (WebView) view.findViewById(R.id.webview);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.tabela);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
         adapter = new CustomAdapter(items);
         recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
         recyclerView.setHasFixedSize(true);
