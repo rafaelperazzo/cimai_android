@@ -49,10 +49,10 @@ public class PesquisaActivity extends AppCompatActivity {
                         fragment = new PesquisaFragment();
                         break;
                     case 1:
-                        fragment = new PesquisaFragment();
+                        fragment = new PesquisaGruposFragment();
                         break;
                     case 2:
-                        fragment = new PesquisaFragment();
+                        fragment = new PesquisaProjetosFragment();
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();
