@@ -1,5 +1,6 @@
 package pet.yoko.apps.cimaiapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -50,6 +51,10 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
     ProgressBar progressoMain;
     Spinner spinAno;
     TextView tituloTabela;
+    public static final String TIPO = "porTipoProducao";
+    public static final String TABELA = "producoesDados";
+    public static final String ANO = "2019";
+    public static final String TITULO = "GRAFICO";
 
     public PesquisaProjetosFragment() {
         // Required empty public constructor
@@ -100,6 +105,8 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
         btnPorArea.setOnClickListener(this);
         Button btnPorGrandeArea = (Button)view.findViewById(R.id.btnProjetoGrandeArea);
         btnPorGrandeArea.setOnClickListener(this);
+        Button btnPorAno = (Button)view.findViewById(R.id.btnProjetoPorAno);
+        btnPorAno.setOnClickListener(this);
         try {
             run(url + spinAno.getSelectedItem().toString());
         } catch (IOException e) {
@@ -232,12 +239,13 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        Intent intent =  new Intent(getContext(),PesquisaChartActivity.class);
         switch (v.getId()) {
             case R.id.btnProjetoArea:
                 try {
                     //this.prepararRecycleView(recyclerView,items,adapter);
                     this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porArea","ProducaoItem");
-                    tituloTabela.setText("Grupos por área");
+                    tituloTabela.setText("Projetos por área");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -247,10 +255,31 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 try {
                     //this.prepararRecycleView(recyclerView,items,adapter);
                     this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porGrandeArea","ProducaoItem");
-                    tituloTabela.setText("Grupos por grande área");
+                    tituloTabela.setText("Projetos por grande área");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                //TODO: AUTOMATIZAR NA CLASSE FERRAMENTAS
+                intent.putExtra(TIPO,"porGrandeArea");
+                intent.putExtra(TABELA,"projetosDados");
+                intent.putExtra(TITULO,"Por Grande Área");
+                intent.putExtra(ANO,spinAno.getSelectedItem().toString());
+                startActivity(intent);
+                break;
+            case R.id.btnProjetoPorAno:
+                try {
+                    //this.prepararRecycleView(recyclerView,items,adapter);
+                    this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porAno","ProducaoItem");
+                    tituloTabela.setText("Projetos por ano");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //TODO: AUTOMATIZAR NA CLASSE FERRAMENTAS
+                intent.putExtra(TIPO,"porAno");
+                intent.putExtra(TABELA,"projetosDados");
+                intent.putExtra(TITULO,"Projetos de Pesquisa Por Ano");
+                intent.putExtra(ANO,"0");
+                startActivity(intent);
                 break;
 
 
