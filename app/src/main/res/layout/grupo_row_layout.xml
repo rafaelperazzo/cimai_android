@@ -9,19 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="NOME DO GRUPO" />
+        android:text="NOME DO GRUPO"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/colunaGrupoLider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="LIDER" />
+        android:text="LIDER"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/colunaGrupoArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="AREA" />
+        android:text="AREA"
+        android:textAlignment="textEnd" />
 </LinearLayout>

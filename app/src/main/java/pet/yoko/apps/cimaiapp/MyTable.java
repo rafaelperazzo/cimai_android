@@ -20,7 +20,6 @@ public class MyTable {
         this.adapter = adapter;
     }
 
-
     public void makeTable() throws JSONException {
         items.clear();
         for(Iterator<String> keys = obj.keys(); keys.hasNext();) {
@@ -29,28 +28,6 @@ public class MyTable {
             items.add(new ProducaoItem(chave,valor));
         }
         this.calcularPercentuais(this.getTotalItems());
-        adapter.notifyDataSetChanged();
-    }
-
-    public void makeTable(String tipoItem) throws JSONException {
-        items.clear();
-        for(Iterator<String> keys = obj.keys(); keys.hasNext();) {
-            if (tipoItem.equals("GrupoItem")) {
-                //TODO: Implementar a tabela de grupo
-            }
-            else {
-                String chave = keys.next();
-                int valor = obj.getInt(chave);
-                items.add(new ProducaoItem(chave,valor));
-            }
-
-        }
-        if (tipoItem.equals("GrupoItem")) {
-
-        }
-        else {
-            this.calcularPercentuais(this.getTotalItems());
-        }
         adapter.notifyDataSetChanged();
     }
 

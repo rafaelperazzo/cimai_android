@@ -7,6 +7,23 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -14,7 +31,7 @@ import android.view.ViewGroup;
  * Use the {@link PesquisaProjetosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PesquisaProjetosFragment extends Fragment {
+public class PesquisaProjetosFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,6 +40,16 @@ public class PesquisaProjetosFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    String url_dados = "https://apps.yoko.pet/webapi/cimaiapi.php?tabela=projetosDados&ano=";
+    String url = "https://apps.yoko.pet/webapi/cimaiapi.php?tabela=projetos&ano=";
+    TextView total_projetos;
+    TextView coordenadores;
+    TextView discentes;
+    TextView atualizacao;
+    ProgressBar progressoMain;
+    Spinner spinAno;
+    TextView tituloTabela;
 
     public PesquisaProjetosFragment() {
         // Required empty public constructor
@@ -59,6 +86,174 @@ public class PesquisaProjetosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pesquisa_projetos, container, false);
+        View view = inflater.inflate(R.layout.fragment_pesquisa_projetos, container, false);
+
+        total_projetos = (TextView)view.findViewById(R.id.txtProjetos);
+        coordenadores = (TextView)view.findViewById(R.id.txtProjetoCoordenadores);
+        discentes = (TextView)view.findViewById(R.id.txtProjetoDiscentes);
+        atualizacao = (TextView)view.findViewById(R.id.txtProjetoAtualizacao);
+        progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
+        progressoMain.setVisibility(View.VISIBLE);
+        tituloTabela = (TextView)view.findViewById(R.id.txtProjetoTituloTabela);
+        spinAno = (Spinner)view.findViewById(R.id.spinProjetoAno);
+        Button btnPorArea = (Button)view.findViewById(R.id.btnProjetoArea);
+        btnPorArea.setOnClickListener(this);
+        Button btnPorGrandeArea = (Button)view.findViewById(R.id.btnProjetoGrandeArea);
+        btnPorGrandeArea.setOnClickListener(this);
+        try {
+            run(url + spinAno.getSelectedItem().toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        spinAno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String anoSelecionado = parentView.getItemAtPosition(position).toString();
+                try {
+                    TextView anoMain = (TextView)getActivity().findViewById(R.id.txtAno);
+                    anoMain.setText(anoSelecionado);
+                    run(url + anoSelecionado);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String url_data = url_dados + spinAno.getSelectedItem().toString() + "&tipo=porAno";
+                try {
+                    runTabela(url_data,"ProducaoItem");
+                    tituloTabela.setText("Por ano");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+
+        });
+
+        return view;
+
+    }
+
+
+    void run(String url) throws IOException {
+
+        progressoMain.setVisibility(View.VISIBLE);
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                progressoMain.setVisibility(View.GONE);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject obj = new JSONObject(myResponse);
+                            total_projetos.setText(obj.getString("total"));
+                            coordenadores.setText(obj.getString("coordenadores"));
+                            discentes.setText(obj.getString("discentes"));
+                            atualizacao.setText("Atualizado: " + obj.getString("atualizacao"));
+                            progressoMain.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+    void runTabela(String url, final String tipoItem) throws IOException {
+
+        progressoMain.setVisibility(View.VISIBLE);
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                progressoMain.setVisibility(View.GONE);
+                call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String myResponse = response.body().string();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONObject obj = new JSONObject(myResponse);
+                            if (tipoItem.equals("ProducaoItem")) {
+                                //MyTable tabela = new MyTable(obj,items,adapter);
+                                //tabela.makeTable();
+                            }
+                            else if (tipoItem.equals("ProjetoItem")) {
+                                //TabelaListaGrupos tabela = new TabelaListaGrupos(obj,listaGrupos,listaGruposAdapter);
+                                //tabela.makeTable();
+                            }
+
+                            progressoMain.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnProjetoArea:
+                try {
+                    //this.prepararRecycleView(recyclerView,items,adapter);
+                    this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porArea","ProducaoItem");
+                    tituloTabela.setText("Grupos por área");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case R.id.btnProjetoGrandeArea:
+                try {
+                    //this.prepararRecycleView(recyclerView,items,adapter);
+                    this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porGrandeArea","ProducaoItem");
+                    tituloTabela.setText("Grupos por grande área");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+
+        }
     }
 }

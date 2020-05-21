@@ -115,12 +115,6 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
         listaGruposAdapter = new GrupoAdapter(listaGrupos);
         recyclerView = (RecyclerView) view.findViewById(R.id.tabelaGrupo);
         adapter = new CustomAdapter(items);
-        /*LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(itemDecor);*/
         this.prepararRecycleView(recyclerView,items,adapter);
 
         try {
@@ -167,7 +161,6 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
                     @Override
                     public void run() {
                         try {
-
                             JSONObject obj = new JSONObject(myResponse);
                             certificados.setText(obj.getString("certificados"));
                             docentes.setText(obj.getString("docentes"));
@@ -211,8 +204,15 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
                     public void run() {
                         try {
                             JSONObject obj = new JSONObject(myResponse);
-                            MyTable tabela = new MyTable(obj,items,adapter);
-                            tabela.makeTable(tipoItem);
+                            if (tipoItem.equals("ProducaoItem")) {
+                                MyTable tabela = new MyTable(obj,items,adapter);
+                                tabela.makeTable();
+                            }
+                            else if (tipoItem.equals("GrupoItem")) {
+                                TabelaListaGrupos tabela = new TabelaListaGrupos(obj,listaGrupos,listaGruposAdapter);
+                                tabela.makeTable();
+                            }
+
                             progressoMain.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -240,7 +240,11 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
 
             case R.id.btnGrupoListaProjetos:
                 this.prepararRecycleView(recyclerView,listaGrupos,listaGruposAdapter);
-                //this.runTabela(url_dados + "tipo=listaGrupos","GrupoItem");
+                try {
+                    this.runTabela(url_dados + "tipo=listaGrupos","GrupoItem");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 tituloTabela.setText("Lista de grupos de pesquisa");
                 break;
 
