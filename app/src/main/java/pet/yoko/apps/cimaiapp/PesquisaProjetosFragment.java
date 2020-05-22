@@ -171,7 +171,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
 
 
     void run(String url) throws IOException {
-
+        tools.idle(((PesquisaActivity)getActivity()),false);
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
@@ -190,7 +190,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String myResponse = response.body().string();
-
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -214,6 +214,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
     void runTabela(String url, final String tipoItem) throws IOException {
 
         progressoMain.setVisibility(View.VISIBLE);
+        tools.idle(((PesquisaActivity)getActivity()),false);
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -231,7 +232,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String myResponse = response.body().string();
-
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -314,4 +315,5 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
 
         }
     }
+
 }

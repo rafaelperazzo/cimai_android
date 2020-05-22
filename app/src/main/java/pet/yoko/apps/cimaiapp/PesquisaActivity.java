@@ -1,9 +1,13 @@
 package pet.yoko.apps.cimaiapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.test.espresso.IdlingResource;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +22,9 @@ public class PesquisaActivity extends AppCompatActivity {
     String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
     ProgressBar progressoMainPesquisa;
     TextView periodicos;
+
+    @Nullable SimpleIdlingResource mIdlingResource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +93,15 @@ public class PesquisaActivity extends AppCompatActivity {
             ano = 2020;
         }
         return (ano);
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
     }
 
 }

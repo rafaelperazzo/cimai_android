@@ -70,6 +70,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     ArrayList<ProducaoItem> items;
     CustomAdapter adapter;
     TextView tituloTabela;
+    Ferramenta tools;
 
     public PesquisaFragment() {
         // Required empty public constructor
@@ -116,7 +117,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         url = url_base + sAno;
         progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
         progressoMain.setVisibility(View.VISIBLE);
-
+        tools = new Ferramenta(getContext());
         items = new ArrayList<ProducaoItem>();
         tituloTabela = (TextView)view.findViewById(R.id.txtTituloTabela);
 
@@ -263,7 +264,8 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     }
 
     void run(String url) throws IOException {
-
+        //idle(false);
+        tools.idle(((PesquisaActivity)getActivity()),false);
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
@@ -282,7 +284,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String myResponse = response.body().string();
-
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -305,7 +307,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     }
 
     void runTabela(String url) throws IOException {
-
+        tools.idle(((PesquisaActivity)getActivity()),false);
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
@@ -324,7 +326,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String myResponse = response.body().string();
-
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

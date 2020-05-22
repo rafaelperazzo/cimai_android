@@ -1,5 +1,6 @@
 package pet.yoko.apps.cimaiapp;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,4 +26,9 @@ public class Ferramenta {
         recyclerView.addItemDecoration(itemDecor);
     }
 
+    public void idle(PesquisaActivity activity,boolean inativo) {
+        if (activity.mIdlingResource!=null) {
+            activity.mIdlingResource.setIdleState(inativo);
+        }
+    }
 }
