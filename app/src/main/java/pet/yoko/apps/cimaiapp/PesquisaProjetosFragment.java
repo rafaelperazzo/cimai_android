@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -56,6 +58,15 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
     public static final String ANO = "2019";
     public static final String TITULO = "GRAFICO";
 
+    RecyclerView recyclerView;
+    ArrayList<ProducaoItem> items;
+    CustomAdapter adapter;
+
+    ArrayList<GrupoItem> listaProjetos;
+    GrupoAdapter listaProjetosAdapter;
+
+    Ferramenta tools;
+
     public PesquisaProjetosFragment() {
         // Required empty public constructor
     }
@@ -92,7 +103,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pesquisa_projetos, container, false);
-
+        tools = new Ferramenta(getContext());
         total_projetos = (TextView)view.findViewById(R.id.txtProjetos);
         coordenadores = (TextView)view.findViewById(R.id.txtProjetoCoordenadores);
         discentes = (TextView)view.findViewById(R.id.txtProjetoDiscentes);
@@ -107,6 +118,8 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
         btnPorGrandeArea.setOnClickListener(this);
         Button btnPorAno = (Button)view.findViewById(R.id.btnProjetoPorAno);
         btnPorAno.setOnClickListener(this);
+        Button btnListaProjetos = (Button)view.findViewById(R.id.btnProjetoLista);
+        btnListaProjetos.setOnClickListener(this);
         try {
             run(url + spinAno.getSelectedItem().toString());
         } catch (IOException e) {
@@ -128,6 +141,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
 
                 String url_data = url_dados + spinAno.getSelectedItem().toString() + "&tipo=porAno";
                 try {
+                    tools.prepararRecycleView(recyclerView,items,adapter);
                     runTabela(url_data,"ProducaoItem");
                     tituloTabela.setText("Por ano");
                 } catch (IOException e) {
@@ -143,6 +157,13 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
             }
 
         });
+
+        recyclerView = (RecyclerView)view.findViewById(R.id.tabelaProjeto);
+        items = new ArrayList<ProducaoItem>();
+        adapter = new CustomAdapter(items);
+        listaProjetos = new ArrayList<GrupoItem>();
+        listaProjetosAdapter = new GrupoAdapter(listaProjetos);
+        tools.prepararRecycleView(recyclerView,items,adapter);
 
         return view;
 
@@ -217,12 +238,12 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                         try {
                             JSONObject obj = new JSONObject(myResponse);
                             if (tipoItem.equals("ProducaoItem")) {
-                                //MyTable tabela = new MyTable(obj,items,adapter);
-                                //tabela.makeTable();
+                                MyTable tabela = new MyTable(obj,items,adapter);
+                                tabela.makeTable();
                             }
-                            else if (tipoItem.equals("ProjetoItem")) {
-                                //TabelaListaGrupos tabela = new TabelaListaGrupos(obj,listaGrupos,listaGruposAdapter);
-                                //tabela.makeTable();
+                            else if (tipoItem.equals("GrupoItem")) {
+                                TabelaListaGrupos tabela = new TabelaListaGrupos(obj,listaProjetos,listaProjetosAdapter);
+                                tabela.makeTable();
                             }
 
                             progressoMain.setVisibility(View.GONE);
@@ -243,7 +264,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.btnProjetoArea:
                 try {
-                    //this.prepararRecycleView(recyclerView,items,adapter);
+                    tools.prepararRecycleView(recyclerView,items,adapter);
                     this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porArea","ProducaoItem");
                     tituloTabela.setText("Projetos por área");
                 } catch (IOException e) {
@@ -253,7 +274,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
 
             case R.id.btnProjetoGrandeArea:
                 try {
-                    //this.prepararRecycleView(recyclerView,items,adapter);
+                    tools.prepararRecycleView(recyclerView,items,adapter);
                     this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porGrandeArea","ProducaoItem");
                     tituloTabela.setText("Projetos por grande área");
                 } catch (IOException e) {
@@ -268,7 +289,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 break;
             case R.id.btnProjetoPorAno:
                 try {
-                    //this.prepararRecycleView(recyclerView,items,adapter);
+                    tools.prepararRecycleView(recyclerView,items,adapter);
                     this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=porAno","ProducaoItem");
                     tituloTabela.setText("Projetos por ano");
                 } catch (IOException e) {
@@ -281,7 +302,15 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 intent.putExtra(ANO,"0");
                 startActivity(intent);
                 break;
-
+            case R.id.btnProjetoLista:
+                tools.prepararRecycleView(recyclerView,listaProjetos,listaProjetosAdapter);
+                try {
+                    this.runTabela(url_dados + spinAno.getSelectedItem().toString() + "&tipo=listaProjetos","GrupoItem");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                tituloTabela.setText("Lista de Projetos");
+                break;
 
         }
     }

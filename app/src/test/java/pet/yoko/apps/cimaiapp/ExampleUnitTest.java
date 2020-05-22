@@ -14,4 +14,12 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+    /*
+    @Test
+    public void greeterSaysHello() {
+        onView(withId(R.id.name_field)).perform(typeText("Steve"));
+        onView(withId(R.id.greet_button)).perform(click());
+        onView(withText("Hello Steve!")).check(matches(isDisplayed()));
+    }*/
+
 }
