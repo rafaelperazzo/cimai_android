@@ -59,6 +59,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
     GrupoAdapter listaGruposAdapter;
 
     RecyclerView recyclerView;
+    Ferramenta tools;
 
     public PesquisaGruposFragment() {
         // Required empty public constructor
@@ -96,7 +97,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_pesquisa_grupos, container, false);
-
+        tools = new Ferramenta(getContext());
         certificados = (TextView)view.findViewById(R.id.txtGrupoCertificados);
         docentes = (TextView)view.findViewById(R.id.txtGrupoDocentes);
         discentes = (TextView)view.findViewById(R.id.txtGrupoDiscentes);
@@ -137,7 +138,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
     }
 
     void run(String url) throws IOException {
-
+        tools.idle(((PesquisaActivity)getActivity()),false);
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
 
@@ -149,6 +150,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
             @Override
             public void onFailure(Call call, IOException e) {
                 progressoMain.setVisibility(View.GONE);
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 call.cancel();
             }
 
@@ -156,7 +158,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String myResponse = response.body().string();
-
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -182,7 +184,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
 
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
-
+        tools.idle(((PesquisaActivity)getActivity()),false);
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -191,6 +193,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
             @Override
             public void onFailure(Call call, IOException e) {
                 progressoMain.setVisibility(View.GONE);
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 call.cancel();
             }
 
@@ -198,7 +201,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String myResponse = response.body().string();
-
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

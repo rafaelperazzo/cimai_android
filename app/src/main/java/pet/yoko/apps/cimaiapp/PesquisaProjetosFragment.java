@@ -183,6 +183,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
             @Override
             public void onFailure(Call call, IOException e) {
                 progressoMain.setVisibility(View.GONE);
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 call.cancel();
             }
 
@@ -225,6 +226,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
             @Override
             public void onFailure(Call call, IOException e) {
                 progressoMain.setVisibility(View.GONE);
+                tools.idle(((PesquisaActivity)getActivity()),true);
                 call.cancel();
             }
 

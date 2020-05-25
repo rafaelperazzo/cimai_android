@@ -18,18 +18,15 @@ import androidx.test.rule.ActivityTestRule;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
-import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static java.util.EnumSet.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -57,8 +54,8 @@ public class PesquisaTest {
     }
 
     @Test
-    public void testAbrirPesquisaProducoes() throws InterruptedException {
-        onView(withId(R.id.txtPeriodicos)).check(matches(withText("127")));
+    public void testAbrirPesquisaProducoes() {
+        onView(withText("PRODUÇÃO BIBLIOGRÁFICA")).perform(click());
         onView(withId(R.id.btnArea)).perform(click());
         onView(withId(R.id.spinAno)).perform(click());
         onData(anything()).atPosition(1).perform(click());
@@ -67,11 +64,42 @@ public class PesquisaTest {
         onData(anything()).atPosition(2).perform(click());
         onView(withId(R.id.spinAno)).perform(click());
         onData(anything()).atPosition(3).perform(click());
-        Thread.sleep(1000);
+
+    }
+
+    @Test
+    public void testAbrirPesquisaProducoesPorProducao() {
+        onView(withText("PRODUÇÃO BIBLIOGRÁFICA")).perform(click());
+        onView(withId(R.id.btnPorProducao)).perform(click());
+        pressBack();
+    }
+
+    @Test
+    public void testPesquisaProducoesResumo() {
+        onView(withText("PRODUÇÃO BIBLIOGRÁFICA")).perform(click());
+        onView(withId(R.id.spinAno)).perform(click());
+        onData(anything()).atPosition(0).perform(click());
+        onView(withId(R.id.txtPeriodicos)).check(matches((not(withText("0")))));
+        onView(withId(R.id.txtLivros)).check(matches((not(withText("0")))));
+        onView(withId(R.id.txtAnais)).check(matches((not(withText("0")))));
+        onView(withId(R.id.txtCapitulos)).check(matches((not(withText("0")))));
+    }
+
+    @Test
+    public void testAbrirPesquisaGrupos() {
         onView(withText("GRUPOS DE PESQUISA")).perform(click());
-        Thread.sleep(1000);
+    }
+
+    @Test
+    public void testAbrirPesquisaProjetos() {
         onView(withText("PROJETOS DE PESQUISA")).perform(click());
-        Thread.sleep(5000);
+        onView(withId(R.id.spinProjetoAno)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
+        onView(withId(R.id.spinProjetoAno)).perform(click());
+        onData(anything()).atPosition(2).perform(click());
+        onView(withId(R.id.spinProjetoAno)).perform(click());
+        onData(anything()).atPosition(3).perform(click());
+
     }
 
     @After
