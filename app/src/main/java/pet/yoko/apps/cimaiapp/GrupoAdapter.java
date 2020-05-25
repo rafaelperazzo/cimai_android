@@ -4,15 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
-public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder> {
+public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder> implements Filterable {
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nome;
@@ -28,9 +32,12 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
     }
 
     private List<GrupoItem> items;
+    private List<GrupoItem> items_filtrados;
 
     public GrupoAdapter(List<GrupoItem> items) {
+
         this.items = items;
+        this.items_filtrados = items;
     }
     @NonNull
     @Override
@@ -56,5 +63,36 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (charString.isEmpty()) {
+                    items_filtrados = items;
+                }
+                else {
+                    ArrayList<GrupoItem> filteredList = new ArrayList<>();
+                    for (GrupoItem grupoItem : items) {
+                        if (grupoItem.nome.contains(charString)||grupoItem.lider.contains(charString)||grupoItem.area.contains(charString)) {
+                            filteredList.add(grupoItem);
+                        }
+                    }
+                    items_filtrados = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = items_filtrados;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                items_filtrados = (ArrayList<GrupoItem>)results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
