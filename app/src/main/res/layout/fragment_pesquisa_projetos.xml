@@ -139,6 +139,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold" />
 
+    <SearchView
+        android:id="@+id/searchProjetos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tabelaProjeto"
         android:layout_width="match_parent"

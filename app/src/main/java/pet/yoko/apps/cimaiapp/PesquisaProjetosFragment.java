@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -66,6 +67,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
     GrupoAdapter listaProjetosAdapter;
 
     Ferramenta tools;
+    SearchView pesquisar;
 
     public PesquisaProjetosFragment() {
         // Required empty public constructor
@@ -164,6 +166,27 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
         listaProjetos = new ArrayList<GrupoItem>();
         listaProjetosAdapter = new GrupoAdapter(listaProjetos);
         tools.prepararRecycleView(recyclerView,items,adapter);
+        pesquisar = (SearchView)view.findViewById(R.id.searchProjetos);
+        pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                listaProjetosAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                listaProjetosAdapter.getFilter().filter(newText);
+                ArrayList<GrupoItem> filtrada = new ArrayList<>();
+                for (GrupoItem linha: listaProjetos) {
+                    if (linha.lider.toLowerCase().contains(newText)) {
+                        filtrada.add(linha);
+                    }
+                }
+                listaProjetosAdapter.setItems(filtrada);
+                return false;
+            }
+        });
 
         return view;
 

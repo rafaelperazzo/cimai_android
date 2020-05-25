@@ -31,6 +31,10 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
         }
     }
 
+    public void setItems(List<GrupoItem> items) {
+        this.items = items;
+    }
+
     private List<GrupoItem> items;
     private List<GrupoItem> items_filtrados;
 
@@ -65,6 +69,8 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
         return items.size();
     }
 
+
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -77,7 +83,8 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
                 else {
                     ArrayList<GrupoItem> filteredList = new ArrayList<>();
                     for (GrupoItem grupoItem : items) {
-                        if (grupoItem.nome.contains(charString)||grupoItem.lider.contains(charString)||grupoItem.area.contains(charString)) {
+                        if (grupoItem.lider.toLowerCase().contains(charString.toLowerCase())) {
+                        //if (grupoItem.nome.contains(charString)||grupoItem.lider.contains(charString)||grupoItem.area.contains(charString)) {
                             filteredList.add(grupoItem);
                         }
                     }
@@ -85,6 +92,7 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = items_filtrados;
+                filterResults.count = items_filtrados.size();
                 return filterResults;
             }
 
