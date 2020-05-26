@@ -2,7 +2,10 @@ package pet.yoko.apps.cimaiapp;
 //https://weeklycoding.com/mpandroidchart-documentation/
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -10,6 +13,9 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarEntry;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -114,13 +120,21 @@ public class PesquisaChartActivity extends AppCompatActivity {
     }
 
     public void shareClick(View view) {
-        /*
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
-        shareIntent.setType("image/jpeg");
-        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-        */
-        grafico.saveToGallery("mychart.jpg",85);
+        Bitmap image = grafico.getChartBitmap();
+        Uri uri = null;
+        try {
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "grafico.png");
+            FileOutputStream stream = new FileOutputStream(file);
+            image.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.close();
+            uri = Uri.fromFile(file);
+            /*Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/png");
+            startActivity(Intent.createChooser(shareIntent, "Compartilhar"));*/
+        } catch (IOException e) {
+
+        }
     }
 }
