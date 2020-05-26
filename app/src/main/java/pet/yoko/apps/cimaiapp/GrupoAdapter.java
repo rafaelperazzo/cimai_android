@@ -35,6 +35,10 @@ public class GrupoAdapter extends RecyclerView.Adapter <GrupoAdapter.ViewHolder>
         this.items = items;
     }
 
+    public List<GrupoItem> getItems() {
+        return items;
+    }
+
     private List<GrupoItem> items;
     private List<GrupoItem> items_filtrados;
 

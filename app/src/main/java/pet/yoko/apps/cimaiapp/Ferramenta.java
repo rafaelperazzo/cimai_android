@@ -2,7 +2,10 @@ package pet.yoko.apps.cimaiapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -64,6 +67,55 @@ public class Ferramenta {
             listaProjetosAdapter.setItems(listaProjetos);
         }
         listaProjetosAdapter.notifyDataSetChanged();
+    }
+
+    public String getTableText(RecyclerView tabela, String tipo, String titulo) {
+
+        if (tipo.equals("ProducaoItem")) {
+            String retorno = titulo + "\n" + "Descrição - Quantidade - Percentual\n" +"*************\n";
+            CustomAdapter adapter = (CustomAdapter)tabela.getAdapter();
+            for (int i=0; i<adapter.getItemCount(); i++) {
+                String descricao = adapter.getItems().get(i).descricao;
+                int quantidade = adapter.getItems().get(i).quantidade;
+                float percentual = adapter.getItems().get(i).percentual;
+                retorno = retorno + descricao + " - " + String.valueOf(quantidade) + " - "+ String.valueOf(percentual) +"\n";
+            }
+            return (retorno);
+        }
+        else if (tipo.equals("GrupoItem")) {
+            String retorno = titulo + "\n" + "Pessoa - Área - Descrição\n" +"*************\n";
+            GrupoAdapter adapter = (GrupoAdapter)tabela.getAdapter();
+            for (int i=0; i<adapter.getItemCount(); i++) {
+                retorno = retorno + "********************\n";
+                String descricao = adapter.getItems().get(i).nome;
+                String area = adapter.getItems().get(i).area;
+                String pessoa = adapter.getItems().get(i).lider;
+                retorno = retorno + pessoa + " \n " + area + " \n "+ descricao +"\n";
+                retorno = retorno + "********************\n";
+            }
+            return(retorno);
+        }
+        return ("");
+    }
+
+    public void shareTextContent(Context c,String text) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        sendIntent.setType("text/plain");
+        Intent shareIntent = Intent.createChooser(sendIntent, "Compartilhando dados...");
+        c.startActivity(shareIntent);
+    }
+
+    public void setImgProjetosShareClick(final Context c, final RecyclerView recyclerView,  ImageView share, final String tipo, final String titulo) {
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String conteudo = "";
+                conteudo = getTableText(recyclerView,tipo,titulo);
+                shareTextContent(c,conteudo);
+            }
+        });
     }
 
     void excec(String url, final Activity activity) throws IOException {

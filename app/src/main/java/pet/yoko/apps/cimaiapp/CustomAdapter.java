@@ -27,6 +27,10 @@ public class CustomAdapter extends RecyclerView.Adapter <CustomAdapter.ViewHolde
         }
     }
 
+    public List<ProducaoItem> getItems() {
+        return items;
+    }
+
     private List<ProducaoItem> items;
 
     public CustomAdapter(List<ProducaoItem> items) {

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
     ArrayList<ProducaoItem> items;
     CustomAdapter adapter;
     TextView tituloTabela;
+    ImageView share;
 
     ArrayList<GrupoItem> listaGrupos;
     GrupoAdapter listaGruposAdapter;
@@ -112,13 +114,14 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
         Button btnListaGrupos = (Button)view.findViewById(R.id.btnGrupoListaProjetos);
         btnListaGrupos.setOnClickListener(this);
         tituloTabela = (TextView)view.findViewById(R.id.txtGrupoTituloTabela);
+        share = (ImageView)view.findViewById(R.id.imgGruposShare);
         //TABELAS
         items = new ArrayList<ProducaoItem>();
         listaGrupos = new ArrayList<GrupoItem>();
         listaGruposAdapter = new GrupoAdapter(listaGrupos);
         recyclerView = (RecyclerView) view.findViewById(R.id.tabelaGrupo);
         adapter = new CustomAdapter(items);
-        this.prepararRecycleView(recyclerView,items,adapter);
+        tools.prepararRecycleView(recyclerView,items,adapter);
 
         try {
             this.run(url);
@@ -143,6 +146,7 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
 
         // Inflate the layout for this fragment
         btnListaGrupos.performClick();
+        tools.setImgProjetosShareClick(getContext(),recyclerView,share,"GrupoItem","Lista de grupos de pesquisa certificados");
         return view;
 
     }
@@ -252,22 +256,26 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
             case R.id.btnGrupoArea:
                 try {
-                    this.prepararRecycleView(recyclerView,items,adapter);
+                    tools.prepararRecycleView(recyclerView,items,adapter);
                     this.runTabela(url_dados + "tipo=porArea","ProducaoItem");
                     tituloTabela.setText("Grupos por área");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Lista de grupos de pesquisa por área");
+                //this.setImgProjetosShareClick("ProducaoItem","Lista de grupos de pesquisa por área");
                 break;
 
             case R.id.btnGrupoListaProjetos:
-                this.prepararRecycleView(recyclerView,listaGrupos,listaGruposAdapter);
+                tools.prepararRecycleView(recyclerView,listaGrupos,listaGruposAdapter);
                 try {
                     this.runTabela(url_dados + "tipo=listaGrupos","GrupoItem");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 tituloTabela.setText("Lista de grupos de pesquisa");
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"GrupoItem","Lista de grupos de pesquisa certificados");
+                //this.setImgProjetosShareClick("GrupoItem","Lista de grupos de pesquisa certificados");
                 break;
 
 

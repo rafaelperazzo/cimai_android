@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -54,6 +55,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
     ProgressBar progressoMain;
     Spinner spinAno;
     TextView tituloTabela;
+    ImageView share;
     public static final String TIPO = "porTipoProducao";
     public static final String TABELA = "producoesDados";
     public static final String ANO = "2019";
@@ -113,6 +115,7 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
         progressoMain = getActivity().findViewById(R.id.progressoPesquisaMain);
         progressoMain.setVisibility(View.VISIBLE);
         tituloTabela = (TextView)view.findViewById(R.id.txtProjetoTituloTabela);
+        share = (ImageView)view.findViewById(R.id.imgProjetosShare);
         spinAno = (Spinner)view.findViewById(R.id.spinProjetoAno);
         Button btnPorArea = (Button)view.findViewById(R.id.btnProjetoArea);
         btnPorArea.setOnClickListener(this);
@@ -182,6 +185,9 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 return false;
             }
         });
+
+        tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Projetos por Ano");
+        //this.setImgProjetosShareClick("ProducaoItem","Projetos por Ano");
 
         return view;
 
@@ -291,6 +297,8 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Projetos por área -  " + spinAno.getSelectedItem().toString());
+                //this.setImgProjetosShareClick("ProducaoItem","Projetos por área -  " + spinAno.getSelectedItem().toString());
                 break;
 
             case R.id.btnProjetoGrandeArea:
@@ -301,6 +309,8 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Projetos por grande área - " + spinAno.getSelectedItem().toString());
+                //this.setImgProjetosShareClick("ProducaoItem","Projetos por grande área - " + spinAno.getSelectedItem().toString());
                 //TODO: AUTOMATIZAR NA CLASSE FERRAMENTAS
                 intent.putExtra(TIPO,"porGrandeArea");
                 intent.putExtra(TABELA,"projetosDados");
@@ -316,6 +326,8 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Projetos por ano ");
+                //this.setImgProjetosShareClick("ProducaoItem","Projetos por ano ");
                 //TODO: AUTOMATIZAR NA CLASSE FERRAMENTAS
                 intent.putExtra(TIPO,"porAno");
                 intent.putExtra(TABELA,"projetosDados");
@@ -331,9 +343,10 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
                     e.printStackTrace();
                 }
                 tituloTabela.setText("Lista de Projetos");
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"GrupoItem","Lista de projetos de " + spinAno.getSelectedItem().toString());
+                //this.setImgProjetosShareClick("GrupoItem","Lista de projetos de " + spinAno.getSelectedItem().toString());
                 break;
 
         }
     }
-
 }

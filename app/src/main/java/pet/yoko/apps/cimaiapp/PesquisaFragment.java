@@ -23,6 +23,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -67,9 +68,11 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
     public static final String TABELA = "producoesDados";
     public static final String ANO = "2019";
     public static final String TITULO = "GRAFICO";
+    RecyclerView recyclerView;
     ArrayList<ProducaoItem> items;
     CustomAdapter adapter;
     TextView tituloTabela;
+    ImageView share;
     Ferramenta tools;
 
     public PesquisaFragment() {
@@ -120,7 +123,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         tools = new Ferramenta(getContext());
         items = new ArrayList<ProducaoItem>();
         tituloTabela = (TextView)view.findViewById(R.id.txtTituloTabela);
-
+        share = (ImageView)view.findViewById(R.id.imgProducoesShare);
         periodicos = (TextView)view.findViewById(R.id.txtPeriodicos);
         anais = (TextView)view.findViewById(R.id.txtAnais);
         capitulos = (TextView)view.findViewById(R.id.txtCapitulos);
@@ -173,7 +176,9 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         progresso = (ProgressBar)view.findViewById(R.id.progresso);
         progresso.setVisibility(View.INVISIBLE);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.tabela);
+        recyclerView = (RecyclerView) view.findViewById(R.id.tabela);
+        adapter = new CustomAdapter(items);
+        /*
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new CustomAdapter(items);
         recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
@@ -181,6 +186,10 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
         DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecor);
+        */
+        tools.prepararRecycleView(recyclerView,items,adapter);
+        tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Por tipo de produção - " + spinAno.getSelectedItem().toString());
+
         return view;
     }
 
@@ -199,6 +208,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Por área - " + spinAno.getSelectedItem().toString());
                 break;
             case R.id.btnGrandeArea:
                 url_data = url_base_tabelas + "ano=" + spinAno.getSelectedItem().toString() + "&tipo=porGrandeArea";
@@ -208,6 +218,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Por grande área - " + spinAno.getSelectedItem().toString());
                 intent.putExtra(TIPO,"porGrandeArea");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por Grande Área");
@@ -222,6 +233,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Por bolsista PQ - " + spinAno.getSelectedItem().toString());
                 intent.putExtra(TIPO,"porBolsistaPq");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por Bolsista PQ");
@@ -236,6 +248,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                tools.setImgProjetosShareClick(getContext(),recyclerView,share,"ProducaoItem","Por tipo de produção - " + spinAno.getSelectedItem().toString());
                 intent.putExtra(TIPO,"porTipoProducao");
                 intent.putExtra(TABELA,"producoesDados");
                 intent.putExtra(TITULO,"Por tipo de produção");
@@ -252,19 +265,7 @@ public class PesquisaFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void ajustarProgresso(WebView webView, final ProgressBar progresso, String URL) {
-        progresso.setVisibility(View.VISIBLE);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                progresso.setVisibility(View.GONE);
-            }
-        });
-        webView.loadUrl(URL);
-    }
-
     void run(String url) throws IOException {
-        //idle(false);
         tools.idle(((PesquisaActivity)getActivity()),false);
         progressoMain.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
