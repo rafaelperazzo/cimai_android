@@ -170,20 +170,15 @@ public class PesquisaProjetosFragment extends Fragment implements View.OnClickLi
         pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                listaProjetosAdapter.getFilter().filter(query);
+                //listaProjetosAdapter.getFilter().filter(query);
+                tools.filtrarTabela(listaProjetos,listaProjetosAdapter,query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                listaProjetosAdapter.getFilter().filter(newText);
-                ArrayList<GrupoItem> filtrada = new ArrayList<>();
-                for (GrupoItem linha: listaProjetos) {
-                    if (linha.lider.toLowerCase().contains(newText)) {
-                        filtrada.add(linha);
-                    }
-                }
-                listaProjetosAdapter.setItems(filtrada);
+                //listaProjetosAdapter.getFilter().filter(newText);
+                tools.filtrarTabela(listaProjetos,listaProjetosAdapter,newText);
                 return false;
             }
         });

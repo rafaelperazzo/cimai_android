@@ -48,6 +48,24 @@ public class Ferramenta {
         }
     }
 
+    public void filtrarTabela(ArrayList<GrupoItem> listaProjetos, GrupoAdapter listaProjetosAdapter, String newText) {
+        ArrayList<GrupoItem> filtrada = new ArrayList<>();
+        if (!newText.isEmpty()) {
+            for (GrupoItem linha: listaProjetos) {
+                if (linha.lider.toLowerCase().contains(newText)||linha.nome.toLowerCase().contains(newText)||linha.area.toLowerCase().contains(newText)) {
+                    filtrada.add(linha);
+                }
+            }
+            filtrada.add(new GrupoItem("Total",String.valueOf(filtrada.size()),""));
+            filtrada.add((new GrupoItem("","","")));
+            listaProjetosAdapter.setItems(filtrada);
+        }
+        else {
+            listaProjetosAdapter.setItems(listaProjetos);
+        }
+        listaProjetosAdapter.notifyDataSetChanged();
+    }
+
     void excec(String url, final Activity activity) throws IOException {
         idle(((PesquisaActivity)activity),false);
         progressoMain.setVisibility(View.VISIBLE);
