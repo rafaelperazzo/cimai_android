@@ -104,7 +104,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -122,6 +122,11 @@
             android:text="GRUPOS POR ÁREA" />
 
     </LinearLayout>
+
+    <SearchView
+        android:id="@+id/searchGrupos"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
 
     <TextView
         android:id="@+id/txtGrupoTituloTabela"

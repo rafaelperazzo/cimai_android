@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,6 +60,8 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
 
     RecyclerView recyclerView;
     Ferramenta tools;
+
+    SearchView pesquisar;
 
     public PesquisaGruposFragment() {
         // Required empty public constructor
@@ -123,7 +125,24 @@ public class PesquisaGruposFragment extends Fragment implements View.OnClickList
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        pesquisar = (SearchView)view.findViewById(R.id.searchGrupos);
+        pesquisar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                 @Override
+                 public boolean onQueryTextSubmit(String query) {
+                     tools.filtrarTabela(listaGrupos,listaGruposAdapter,query);
+                     return false;
+                 }
+
+                 @Override
+                 public boolean onQueryTextChange(String newText) {
+                     tools.filtrarTabela(listaGrupos,listaGruposAdapter,newText);
+                     return false;
+                 }
+             });
+
         // Inflate the layout for this fragment
+        btnListaGrupos.performClick();
         return view;
 
     }

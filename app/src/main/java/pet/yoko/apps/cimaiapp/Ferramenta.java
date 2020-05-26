@@ -52,7 +52,7 @@ public class Ferramenta {
         ArrayList<GrupoItem> filtrada = new ArrayList<>();
         if (!newText.isEmpty()) {
             for (GrupoItem linha: listaProjetos) {
-                if (linha.lider.toLowerCase().contains(newText)||linha.nome.toLowerCase().contains(newText)||linha.area.toLowerCase().contains(newText)) {
+                if (linha.lider.toLowerCase().contains(newText)) {
                     filtrada.add(linha);
                 }
             }
