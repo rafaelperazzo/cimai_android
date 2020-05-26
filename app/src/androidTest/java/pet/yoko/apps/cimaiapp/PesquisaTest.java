@@ -22,13 +22,13 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 
 
@@ -40,9 +40,9 @@ public class PesquisaTest {
     Random gerador = new Random();
 
     public void repetir(int id) {
-        for (int i = 0; i<=8; i++) {
+        for (int i = 0; i<8; i++) {
             onView(withId(id)).perform(click());
-            onData(anything()).atPosition(gerador.nextInt(8)).perform(click());
+            onData(anything()).atPosition(i).perform(click());
         }
     }
 
@@ -73,9 +73,9 @@ public class PesquisaTest {
     @Test
     public void testAbrirPesquisaProducoesBotoes() {
         onView(withText("PRODUÇÃO BIBLIOGRÁFICA")).perform(click());
-        for (int i = 0; i<=3; i++) {
+        for (int i = 0; i<8; i++) {
             onView(withId(R.id.spinAno)).perform(click());
-            onData(anything()).atPosition(gerador.nextInt(8)).perform(click());
+            onData(anything()).atPosition(i).perform(click());
             onView(withId(R.id.btnPorProducao)).perform(click());
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
@@ -94,9 +94,9 @@ public class PesquisaTest {
         onView(withText("PRODUÇÃO BIBLIOGRÁFICA")).perform(click());
         onView(withId(R.id.spinAno)).perform(click());
         onData(anything()).atPosition(0).perform(click());
-        for (int i = 0; i<=8; i++) {
+        for (int i = 0; i<8; i++) {
             onView(withId(R.id.spinAno)).perform(click());
-            onData(anything()).atPosition(gerador.nextInt(8)).perform(click());
+            onData(anything()).atPosition(i).perform(click());
             onView(withId(R.id.txtPeriodicos)).check(matches((not(withText("0")))));
             onView(withId(R.id.txtLivros)).check(matches((not(withText("0")))));
             onView(withId(R.id.txtAnais)).check(matches((not(withText("0")))));
@@ -119,9 +119,9 @@ public class PesquisaTest {
     @Test
     public void testAbrirPesquisaProjetos() {
         onView(withText("PROJETOS DE PESQUISA")).perform(click());
-        for (int i = 0; i<=8; i++) {
+        for (int i = 0; i<8; i++) {
             onView(withId(R.id.spinProjetoAno)).perform(click());
-            onData(anything()).atPosition(gerador.nextInt(8)).perform(click());
+            onData(anything()).atPosition(i).perform(click());
             onView(withId(R.id.txtProjetos)).check(matches((not(withText("0")))));
             onView(withId(R.id.txtProjetoCoordenadores)).check(matches((not(withText("0")))));
             onView(withId(R.id.txtProjetoDiscentes)).check(matches((not(withText("0")))));
@@ -132,10 +132,12 @@ public class PesquisaTest {
     @Test
     public void testAbrirPesquisaProjetosBotoes() {
         onView(withText("PROJETOS DE PESQUISA")).perform(click());
-        for (int i = 0; i<=3; i++) {
+        for (int i = 0; i<8; i++) {
             onView(withId(R.id.spinProjetoAno)).perform(click());
-            onData(anything()).atPosition(gerador.nextInt(8)).perform(click());
+            onData(anything()).atPosition(i).perform(click());
             onView(withId(R.id.btnProjetoLista)).perform(click());
+            onView(withId(R.id.searchProjetos)).perform(typeText("materi"));
+            onView(withId(R.id.searchProjetos)).perform(closeSoftKeyboard());
             onView(withId(R.id.btnProjetoGrandeArea)).perform(click());
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
@@ -143,6 +145,8 @@ public class PesquisaTest {
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
             onView(withId(R.id.btnProjetoArea)).perform(click());
+            onView(withId(R.id.txtPeriodicos)).perform(click());
+            pressBack();
         }
     }
 

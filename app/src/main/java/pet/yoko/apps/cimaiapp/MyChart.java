@@ -113,7 +113,9 @@ public class MyChart {
         grafico.setDrawBarShadow(false);
         //grafico.getDescription().setText(TITULO_GRAFICO);
         grafico.getDescription().setEnabled(false);
-        grafico.groupBars(0f,0f,0.06f);
+        if (dados.size()>1) {
+            grafico.groupBars(0f,0f,0.06f);
+        }
         grafico.invalidate();
         grafico.setSaveEnabled(true);
 
