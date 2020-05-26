@@ -86,6 +86,8 @@ public class PesquisaTest {
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
             onView(withId(R.id.btnArea)).perform(click());
+            onView(withId(R.id.txtPeriodicos)).perform(click());
+            pressBack();
         }
     }
 
@@ -145,8 +147,6 @@ public class PesquisaTest {
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
             onView(withId(R.id.btnProjetoArea)).perform(click());
-            onView(withId(R.id.txtPeriodicos)).perform(click());
-            pressBack();
         }
     }
 
