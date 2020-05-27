@@ -76,18 +76,25 @@ public class PesquisaTest {
         for (int i = 0; i<8; i++) {
             onView(withId(R.id.spinAno)).perform(click());
             onData(anything()).atPosition(i).perform(click());
+
             onView(withId(R.id.btnPorProducao)).perform(click());
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
+
             onView(withId(R.id.btnGrandeArea)).perform(click());
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
+
             onView(withId(R.id.btnBolsistas)).perform(click());
             onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
+
             onView(withId(R.id.btnArea)).perform(click());
+
             onView(withId(R.id.txtPeriodicos)).perform(click());
+            onView(withId(R.id.porProducoesChart)).check(matches(isDisplayed()));
             pressBack();
+
         }
     }
 

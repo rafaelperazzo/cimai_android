@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -133,7 +132,6 @@ public class PesquisaChartActivity extends AppCompatActivity {
             File imagePath = new File(getApplicationContext().getCacheDir(), "images");
             File newFile = new File(imagePath, "grafico.png");
             uri = FileProvider.getUriForFile(PesquisaChartActivity.this,BuildConfig.APPLICATION_ID + ".provider",newFile);
-            //uri = Uri.fromFile(file);
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

@@ -3,19 +3,14 @@ package pet.yoko.apps.cimaiapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
-import kotlin.Function;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
