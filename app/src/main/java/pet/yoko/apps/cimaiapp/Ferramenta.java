@@ -9,6 +9,12 @@ import android.widget.ProgressBar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.inamik.text.tables.GridTable;
+import com.inamik.text.tables.SimpleTable;
+import com.inamik.text.tables.grid.Border;
+import com.inamik.text.tables.grid.Util;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import okhttp3.Call;
@@ -16,6 +22,9 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.inamik.text.tables.Cell.Functions.TOP_ALIGN;
+import static com.inamik.text.tables.Cell.Functions.VERTICAL_CENTER;
 
 public class Ferramenta {
 
@@ -67,28 +76,53 @@ public class Ferramenta {
     public String getTableText(RecyclerView tabela, String tipo, String titulo) {
 
         if (tipo.equals("ProducaoItem")) {
-            String retorno = titulo + "\n" + "Descrição - Quantidade - Percentual\n" +"*************\n";
+
+            SimpleTable st = SimpleTable.of();
+            st.nextRow();
+            st.nextCell().addLine("Descrição");
+            st.nextCell().addLine("Quantidade");
+            st.nextCell().addLine("Percentual");
+
             CustomAdapter adapter = (CustomAdapter)tabela.getAdapter();
+
             for (int i=0; i<adapter.getItemCount(); i++) {
                 String descricao = adapter.getItems().get(i).descricao;
                 int quantidade = adapter.getItems().get(i).quantidade;
                 float percentual = adapter.getItems().get(i).percentual;
-                retorno = retorno + descricao + " - " + String.valueOf(quantidade) + " - "+ String.valueOf(percentual) +"\n";
+                st.nextRow();
+                st.nextCell().addLine(descricao).applyToCell(VERTICAL_CENTER.withHeight(5));
+                st.nextCell().addLine(String.valueOf(quantidade)).applyToCell(VERTICAL_CENTER.withHeight(5));
+                st.nextCell().addLine(String.valueOf(percentual)).applyToCell(VERTICAL_CENTER.withHeight(5));
             }
-            return (retorno);
+
+            GridTable gt = st.toGrid();
+            gt = Border.of(Border.Chars.of('+', '-', '|')).apply(gt);
+            return(Util.asString(gt));
         }
         else if (tipo.equals("GrupoItem")) {
-            String retorno = titulo + "\n" + "Pessoa - Área - Descrição\n" +"*************\n";
+
+            SimpleTable st = SimpleTable.of();
+            st.nextRow();
+            st.nextCell().addLine("Pessoa");
+            st.nextCell().addLine("Área");
+            st.nextCell().addLine("Descrição");
+
             GrupoAdapter adapter = (GrupoAdapter)tabela.getAdapter();
+
             for (int i=0; i<adapter.getItemCount(); i++) {
-                retorno = retorno + "********************\n";
                 String descricao = adapter.getItems().get(i).nome;
                 String area = adapter.getItems().get(i).area;
                 String pessoa = adapter.getItems().get(i).lider;
-                retorno = retorno + pessoa + " \n " + area + " \n "+ descricao +"\n";
-                retorno = retorno + "********************\n";
+                st.nextRow();
+                st.nextCell().addLine(pessoa);
+                st.nextCell().addLine(String.valueOf(area));
+                st.nextCell().addLine(String.valueOf(descricao));
+
             }
-            return(retorno);
+
+            GridTable gt = st.toGrid();
+            gt = Border.of(Border.Chars.of('+', '-', '|')).apply(gt);
+            return(Util.asString(gt));
         }
         return ("");
     }
