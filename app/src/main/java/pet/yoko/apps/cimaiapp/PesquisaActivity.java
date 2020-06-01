@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 
 public class PesquisaActivity extends AppCompatActivity {
-    String url = "https://apps.yoko.pet//api/cimaiapi.php?tabela=producoes&ano=";
+
     ProgressBar progressoMainPesquisa;
     TextView periodicos;
 
@@ -36,7 +36,7 @@ public class PesquisaActivity extends AppCompatActivity {
         periodicos = (TextView)findViewById(R.id.txtPeriodicos);
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.ANO);
-        url = url + message;
+
         TextView ano = (TextView) (findViewById(R.id.txtAno));
         ano.setText(message);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -82,18 +82,7 @@ public class PesquisaActivity extends AppCompatActivity {
 
     }
 
-    public int getAno() {
-        int ano = 2019;
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.ANO);
-        try {
-            ano = Integer.parseInt(message);
-        }
-        catch (NumberFormatException e) {
-            ano = 2020;
-        }
-        return (ano);
-    }
+
 
     @VisibleForTesting
     @NonNull

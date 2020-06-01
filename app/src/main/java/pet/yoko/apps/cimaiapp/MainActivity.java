@@ -14,15 +14,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Spinner spinner = (Spinner) findViewById(R.id.cmbAno);
+
 
     }
 
     public void pesquisaClick(View view) {
         Intent intent = new Intent(this, PesquisaActivity.class);
-        Spinner ano = (Spinner)findViewById(R.id.cmbAno);
-        String sAno = ano.getSelectedItem().toString();
-        intent.putExtra(ANO,sAno);
         startActivity(intent);
     }
 

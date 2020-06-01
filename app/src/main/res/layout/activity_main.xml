@@ -31,15 +31,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/cmbAno"
-        android:layout_width="match_parent"
-        android:layout_height="43dp"
-        android:entries="@array/anos_array"
-        android:gravity="center_horizontal"
-        android:textAlignment="center"
-        tools:visibility="invisible" />
-
     <LinearLayout
         android:id="@+id/ensinoPesquisa_layout"
         android:layout_width="match_parent"
