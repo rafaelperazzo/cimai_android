@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/txtCIMAI"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="57dp"
         android:gravity="center_horizontal"
         android:text="Coordenadoria de Informação, Monitoramento e Avaliação Institucional - CIMAI/PROPLAN"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -140,6 +140,7 @@
             android:layout_width="426dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="PRAEclick"
             app:srcCompat="@drawable/assistencia_social" />
 
         <ImageView
