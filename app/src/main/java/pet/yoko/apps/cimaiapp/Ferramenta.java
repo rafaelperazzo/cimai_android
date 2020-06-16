@@ -15,6 +15,10 @@ import com.inamik.text.tables.SimpleTable;
 import com.inamik.text.tables.grid.Border;
 import com.inamik.text.tables.grid.Util;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import okhttp3.Call;
@@ -182,6 +186,19 @@ public class Ferramenta {
 
     private void executarTarefa() {
 
+    }
+
+    public static int getAppPlayStoreVersion(String html) {
+        Document doc = Jsoup.parse(html);
+        int versaoPublicada = 0;
+        Elements versao = doc.getElementsByClass("htlgb");
+        try {
+            versaoPublicada = Integer.parseInt(versao.get(7).text());
+        }
+        catch (NumberFormatException e) {
+            versaoPublicada = 0;
+        }
+        return (versaoPublicada);
     }
 
 }

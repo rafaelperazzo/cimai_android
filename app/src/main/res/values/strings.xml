@@ -17,7 +17,7 @@
     <string name="tab_text_3">PROJETOS DE PESQUISA</string>
     <string name="pesquisaTabAno">ANO</string>
     <string name="strPesquisa">PESQUISA</string>
-
+    <string name="atualizacao">Uma nova versão do aplicativo está disponível, com correções e novos recursos</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
