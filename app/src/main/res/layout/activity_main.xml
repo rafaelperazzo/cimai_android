@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/txtCIMAI"
         android:layout_width="match_parent"
-        android:layout_height="57dp"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Coordenadoria de Informação, Monitoramento e Avaliação Institucional - CIMAI/PROPLAN"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -57,7 +57,7 @@
     <LinearLayout
         android:id="@+id/ensino_pesquisa_divisor"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -105,7 +105,7 @@
     <LinearLayout
         android:id="@+id/extensao_cultura_divisor"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -148,6 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="showAdministrativoMenu"
             app:srcCompat="@drawable/orcamento" />
 
     </LinearLayout>
@@ -155,12 +156,12 @@
     <LinearLayout
         android:id="@+id/praeOrcamento_divisor"
         android:layout_width="match_parent"
-        android:layout_height="34dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/txtPRAE"
-            android:layout_width="151dp"
+            android:layout_width="198dp"
             android:layout_height="34dp"
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
@@ -174,7 +175,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
-            android:text="ORÇAMENTO"
+            android:text="ADMINISTRATIVO"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
     </LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/main_compartilhar"
+        android:title="Compartilhar este app" />
+    <item android:id="@+id/main_avaliar"
+        android:title="Avaliar este app na Play Store" />
+</menu>

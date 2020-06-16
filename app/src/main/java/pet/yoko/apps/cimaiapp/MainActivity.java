@@ -1,6 +1,7 @@
 package pet.yoko.apps.cimaiapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
@@ -8,6 +9,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.io.IOException;
@@ -19,7 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import pet.yoko.apps.cimaiapp.prae.PraeActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     public static final String ANO = "";
     public int VERSAO;
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         VERSAO = getVersionCode();
         try {
-            run("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp",0);
+            run("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp", 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String versionName = packageInfo.versionName;
             versionCode = packageInfo.versionCode;
-        }
-        catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return (versionCode);
@@ -90,10 +93,9 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (tipo==0) {
+                        if (tipo == 0) {
                             verificarAtualizacao(myResponse);
-                        }
-                        else {
+                        } else {
 
                         }
 
@@ -106,14 +108,75 @@ public class MainActivity extends AppCompatActivity {
 
     public void verificarAtualizacao(String myResponse) {
         int versaoNova = Ferramenta.getAppPlayStoreVersion(myResponse);
-        if (VERSAO<versaoNova) {
+        if (VERSAO < versaoNova) {
             popupAtualizar();
         }
     }
 
     public void popupAtualizar() {
         DialogFragment newFragment = new AtualizarDialog();
-        newFragment.show(getSupportFragmentManager(),"Atualizar");
+        newFragment.show(getSupportFragmentManager(), "Atualizar");
+    }
+
+    public void showAdministrativoMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.popup_main_administrativo);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.popup_main_sustentabilidade:
+                //intent = new Intent(this, MapaActivity.class);
+                //intent.putExtra(TIPO_MAPA,"cidades");
+                //startActivity(intent);
+                return true;
+            case R.id.popup_main_orcamento:
+                //intent = new Intent(this, MapaActivity.class);
+                //intent.putExtra(TIPO_MAPA,"cidades");
+                //startActivity(intent);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.main_compartilhar:
+                String conteudo = "https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp";
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, conteudo);
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, "Compartilhando dados...");
+                startActivity(shareIntent);
+                return true;
+            case R.id.main_avaliar:
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp");
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

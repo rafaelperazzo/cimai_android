@@ -14,7 +14,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
 
 import java.util.Random;
 
@@ -38,6 +40,7 @@ import static org.hamcrest.Matchers.not;
 public class PesquisaTest {
     private IdlingResource mIdlingResource;
     Random gerador = new Random();
+    UiDevice aparelho = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
     public void repetir(int id) {
         for (int i = 0; i<8; i++) {

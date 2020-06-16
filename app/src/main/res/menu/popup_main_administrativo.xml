@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/popup_main_sustentabilidade"
+        android:icon="@drawable/sustentabilidade48"
+        android:title="Sustentabilidade" />
+    <item android:id="@+id/popup_main_orcamento"
+        android:icon="@drawable/orcamento48"
+        android:title="Orçamento" />
+    <item android:id="@+id/popup_main_indicadores_estrategicos"
+        android:icon="@drawable/orcamento48"
+        android:title="Indicadores Estratégicos" />
+</menu>
