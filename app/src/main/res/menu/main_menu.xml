@@ -4,4 +4,6 @@
         android:title="Compartilhar este app" />
     <item android:id="@+id/main_avaliar"
         android:title="Avaliar este app na Play Store" />
+    <item android:id="@+id/main_ai"
+        android:title="Avaliação Institucional" />
 </menu>

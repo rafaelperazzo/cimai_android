@@ -11,6 +11,31 @@
         <item>2019</item>
         <item>2020</item>
     </string-array>
+    <string-array name="anos_ai_array">
+        <item>2019</item>
+    </string-array>
+
+    <string-array name="ua_array">
+        <item>CENTRO DE CIENCIAS E TECNOLOGIA</item>
+        <item>CENTRO DE CIENCIAS SOCIAIS APLICADAS</item>
+        <item>CENTRO DE CIENCIAS AGRARIAS E DA BIODIVERSIDADE</item>
+        <item>FACULDADE DE MECIDINA</item>
+        <item>INSTITUTO DE FORMACAO DE EDUCADORES</item>
+        <item>INSTITUTO INTERDISCIPLINAR DE SOCIEDADE, CULTURA E ARTE</item>
+    </string-array>
+
+    <string-array name="dimensao71_array">
+        <item>Os ambientes de aprendizagem possuem tamanho adequado à quantidade de alunos da turma?</item>
+        <item>Os ambientes de aprendizagem possuem adequada climatização?</item>
+        <item>Os ambientes de aprendizagem possuem adequada iluminação?</item>
+        <item>Os ambientes de aprendizagem possuem acústica adequada que isola ruídos e barulhos externos?</item>
+        <item>Os ambientes de aprendizagem possuem mobiliários (mesas, cadeiras e lousa) e equipamentos (data show) adequados ao ensino?</item>
+        <item>Os laboratórios de informática são adequados aos objetivos do curso?</item>
+        <item>Os laboratórios específicos de formação profissional são adequados aos objetivos do curso?</item>
+        <item>O acervo bibliográfico disponível no Sistema de Bibliotecas é adequado às exigências da formação dos alunos?</item>
+        <item>Os banheiros são limpos e adequados ao uso?</item>
+        <item>A instituição dispôs de refeitório ou cantina em condições adequadas para atenderem as necessidades dos seus usuários?</item>
+    </string-array>
     <string name="title_activity_tab_pesquisa">TabPesquisaActivity</string>
     <string name="tab_text_1">PRODUÇÃO BIBLIOGRÁFICA</string>
     <string name="tab_text_2">GRUPOS DE PESQUISA</string>
