@@ -51,17 +51,17 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="143dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.2"
             android:text="ANO"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Spinner
             android:id="@+id/cmbAIAno"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:entries="@array/anos_ai_array" />
     </LinearLayout>
 
@@ -72,17 +72,17 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="143dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.2"
             android:text="ITEM"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Spinner
             android:id="@+id/cmbAIPergunta"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:entries="@array/dimensao71_array" />
     </LinearLayout>
 
@@ -93,17 +93,17 @@
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="143"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.2"
             android:text="UA"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Spinner
             android:id="@+id/cmbAIUA"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:entries="@array/ua_array" />
     </LinearLayout>
 

@@ -28,8 +28,33 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Coordenadoria de Informação, Monitoramento e Avaliação Institucional - CIMAI/PROPLAN"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SISTEMA CENTRAL DE INFORMAÇÕES"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ANUÁRIO ESTATÍSTICO"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#3F51B5"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ensinoPesquisa_layout"
@@ -39,16 +64,16 @@
 
         <ImageView
             android:id="@+id/imgEnsino"
-            android:layout_width="89dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             app:srcCompat="@drawable/ensino" />
 
         <ImageView
             android:id="@+id/imgPesquisa"
-            android:layout_width="75dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:onClick="pesquisaClick"
             app:srcCompat="@drawable/pesquisa" />
 
@@ -62,9 +87,9 @@
 
         <TextView
             android:id="@+id/txtEnsino"
-            android:layout_width="120dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/txtEnsino"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -72,9 +97,9 @@
 
         <TextView
             android:id="@+id/txtPesquisa"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal|center_vertical"
             android:text="PESQUISA"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -89,16 +114,16 @@
 
         <ImageView
             android:id="@+id/imgExtensao"
-            android:layout_width="82dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             app:srcCompat="@drawable/extensao" />
 
         <ImageView
             android:id="@+id/imgCultura"
-            android:layout_width="67dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             app:srcCompat="@drawable/cultura" />
     </LinearLayout>
 
@@ -110,9 +135,9 @@
 
         <TextView
             android:id="@+id/txtExtensao"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal|center_vertical"
             android:text="EXTENSÃO"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -120,9 +145,9 @@
 
         <TextView
             android:id="@+id/txtCultura"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal|center_vertical"
             android:text="CULTURA"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -137,17 +162,17 @@
 
         <ImageView
             android:id="@+id/imageView8"
-            android:layout_width="426dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:onClick="PRAEclick"
             app:srcCompat="@drawable/assistencia_social" />
 
         <ImageView
             android:id="@+id/imageView9"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:onClick="showAdministrativoMenu"
             app:srcCompat="@drawable/orcamento" />
 
@@ -161,9 +186,9 @@
 
         <TextView
             android:id="@+id/txtPRAE"
-            android:layout_width="198dp"
-            android:layout_height="34dp"
-            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal|center_vertical"
             android:text="PRAE"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -171,9 +196,9 @@
 
         <TextView
             android:id="@+id/txtOrcamento"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_horizontal|center_vertical"
             android:text="ADMINISTRATIVO"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
