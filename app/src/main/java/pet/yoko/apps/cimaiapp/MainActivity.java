@@ -24,6 +24,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import pet.yoko.apps.cimaiapp.db.DatabaseClient;
 import pet.yoko.apps.cimaiapp.prae.PraeActivity;
+import pet.yoko.apps.cimaiapp.tasks.TaskDownload;
 import pet.yoko.apps.cimaiapp.tasks.TaskDownloadPrae;
 import pet.yoko.apps.cimaiapp.tasks.TaskDownloadPrograd;
 
