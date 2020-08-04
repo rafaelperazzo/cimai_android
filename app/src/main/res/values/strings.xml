@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CIMAI/PROPLAN/UFCA</string>
     <string name="txtEnsino">ENSINO</string>
+    <string name="url_base">https://sci02-ter-jne.ufca.edu.br/webapi/</string>
     <string-array name="anos_array">
         <item>2013</item>
         <item>2014</item>
