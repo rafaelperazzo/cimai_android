@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 
@@ -27,12 +28,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     public static final String ANO = "";
     public int VERSAO;
+    ProgressBar progressoMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         VERSAO = getVersionCode();
+        progressoMain = (ProgressBar)findViewById(R.id.progressoMain);
+        progressoMain.setVisibility(View.GONE);
         try {
             run("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp", 0);
         } catch (IOException e) {

@@ -2,6 +2,7 @@ package pet.yoko.apps.cimaiapp.tasks;
 
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ public abstract class TaskDownload extends AsyncTask <Void,Void,Void> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        progresso.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
         progresso.setVisibility(View.VISIBLE);
     }
 
@@ -55,6 +57,7 @@ public abstract class TaskDownload extends AsyncTask <Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        progresso.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
         progresso.setVisibility(View.GONE);
     }
 }
