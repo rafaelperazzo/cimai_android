@@ -25,6 +25,7 @@ import okhttp3.Response;
 import pet.yoko.apps.cimaiapp.db.DatabaseClient;
 import pet.yoko.apps.cimaiapp.prae.PraeActivity;
 import pet.yoko.apps.cimaiapp.tasks.TaskDownload;
+import pet.yoko.apps.cimaiapp.tasks.TaskDownloadAll;
 import pet.yoko.apps.cimaiapp.tasks.TaskDownloadPrae;
 import pet.yoko.apps.cimaiapp.tasks.TaskDownloadPrograd;
 
@@ -41,10 +42,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         VERSAO = getVersionCode();
         progressoMain = (ProgressBar)findViewById(R.id.progressoMain);
         progressoMain.setVisibility(View.GONE);
-        TaskDownloadPrae dPrae = new TaskDownloadPrae(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progressoMain,getResources().getString(R.string.url_base) + "anuario/prae");
-        dPrae.execute();
-        TaskDownloadPrograd dPrograd = new TaskDownloadPrograd(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progressoMain,getResources().getString(R.string.url_base) + "anuario/prograd");
-        dPrograd.execute();
+        TaskDownloadAll downloadAll = new TaskDownloadAll(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progressoMain);
+        downloadAll.execute();
         try {
             run("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp", 0);
         } catch (IOException e) {
