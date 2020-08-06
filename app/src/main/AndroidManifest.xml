@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ai.AIActivity"></activity>
+        <activity android:name=".prograd.ProgradActivity"></activity>
+        <activity android:name=".ai.AIActivity" />
         <activity android:name=".prae.PraeActivity" />
         <activity android:name=".PesquisaChartActivity" />
         <activity android:name=".PesquisaActivity" />

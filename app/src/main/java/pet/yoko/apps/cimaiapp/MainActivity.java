@@ -23,6 +23,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,14 +61,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
         VERSAO = getVersionCode();
         progressoMain = (ProgressBar)findViewById(R.id.progressoMain);
+        progressoMain.setVisibility(View.GONE);
         sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
         Ferramenta.setSharedPref(sharedPref);
-        atualizarDados();
         iniciarBroadCast();
-        TaskDownloadPrae dPrae = new TaskDownloadPrae(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"https://sci02-ter-jne.ufca.edu.br/webapi/anuario/prae",localBroadcastManager);
-        TaskDownloadPrograd dPrograd = new TaskDownloadPrograd(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"https://sci02-ter-jne.ufca.edu.br/webapi/anuario/prograd",localBroadcastManager);
-        dPrae.execute();
-        dPrograd.execute();
+        verificarDados();
+
         try {
             run("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp", 0);
         } catch (IOException e) {
@@ -70,12 +75,44 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     private void atualizarDados() {
+        TaskDownloadPrae dPrae = new TaskDownloadPrae(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"https://sci02-ter-jne.ufca.edu.br/webapi/anuario/prae",localBroadcastManager);
+        TaskDownloadPrograd dPrograd = new TaskDownloadPrograd(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"https://sci02-ter-jne.ufca.edu.br/webapi/anuario/prograd",localBroadcastManager);
+        progressoMain.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+        progressoMain.setVisibility(View.VISIBLE);
+        dPrae.execute();
+        dPrograd.execute();
+    }
+
+    private void verificarDados() {
         //VERIFICANDO SE É NECESSÁRIO ATUALIZAR O BANCO DE DADOS
+        String atualizado = Ferramenta.getPref("atualizado","0000-00-00");
+        if (atualizado.equals("0000-00-00")) {
+            //BANCO DE DADOS INEXISTENTE
+            atualizarDados();
+        }
+        else {
+            //Dados antigos (mais que 60 dias)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String hoje = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+            String ultima_atualizacao = Ferramenta.getPref("atualizado","2020-01-01");
+            Date firstDate;
+            Date lastDate;
+            try {
+                lastDate = sdf.parse(hoje);
+                firstDate = sdf.parse(ultima_atualizacao);
+                long diffInMillies = Math.abs(lastDate.getTime() - firstDate.getTime());
+                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+                if (diff>60) {
+                    atualizarDados();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void iniciarBroadCast() {
-        progressoMain.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
-        progressoMain.setVisibility(View.VISIBLE);
+
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         myBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -84,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 if (TASKS_FINISHED==MAX_TASKS) {
                     progressoMain.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
                     progressoMain.setVisibility(View.GONE);
+                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+                    Ferramenta.setPref("atualizado",timeStamp);
                 }
             }
         };

@@ -46,7 +46,7 @@
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SISTEMA CENTRAL DE INFORMAÇÕES"
+            android:text="COMISSÃO PRÓPRIA DE AVALIAÇÃO - CPA/UFCA"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:text="ANUÁRIO ESTATÍSTICO"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#3F51B5"
             android:textStyle="bold" />
     </LinearLayout>
