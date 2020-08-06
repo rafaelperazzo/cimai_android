@@ -3,6 +3,7 @@ package pet.yoko.apps.cimaiapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -34,6 +35,7 @@ public class Ferramenta {
 
     private Context c;
     private ProgressBar progressoMain;
+    private static SharedPreferences sharedPref;
 
     public Ferramenta(Context c) {
         this.c = c;
@@ -42,6 +44,25 @@ public class Ferramenta {
     public Ferramenta(Context c, ProgressBar pb) {
         this.c = c;
         this.progressoMain = pb;
+    }
+
+    public static SharedPreferences getSharedPref() {
+        return sharedPref;
+    }
+
+    public static void setSharedPref(SharedPreferences sharedPref) {
+        Ferramenta.sharedPref = sharedPref;
+    }
+
+    public static void setPref(String config, String value) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(config, value);
+        editor.commit();
+    }
+
+    public static String getPref(String config, String defaultValue) {
+        String atualizacao = sharedPref.getString(config,defaultValue);
+        return (atualizacao);
     }
 
     public void prepararRecycleView(RecyclerView recyclerView, ArrayList items, RecyclerView.Adapter adapter) {

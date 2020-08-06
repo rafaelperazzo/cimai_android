@@ -2,6 +2,8 @@ package pet.yoko.apps.cimaiapp.tasks;
 
 import android.widget.ProgressBar;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -10,8 +12,8 @@ import pet.yoko.apps.cimaiapp.db.ItemPrograd;
 
 public class TaskDownloadPrograd extends TaskDownload {
 
-    public TaskDownloadPrograd(AppDatabase db, String url) {
-        super(db, url);
+    public TaskDownloadPrograd(AppDatabase db, String url, LocalBroadcastManager broadcast) {
+        super(db, url, broadcast);
     }
 
     @Override

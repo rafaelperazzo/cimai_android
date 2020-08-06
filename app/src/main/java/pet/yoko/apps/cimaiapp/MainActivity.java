@@ -3,8 +3,13 @@ package pet.yoko.apps.cimaiapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.DialogFragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,7 +18,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -34,6 +41,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public static final String ANO = "";
     public int VERSAO;
     ProgressBar progressoMain;
+    LocalBroadcastManager localBroadcastManager;
+    BroadcastReceiver myBroadcastReceiver;
+    IntentFilter myFilter;
+    private final int MAX_TASKS = 2; //número de downloads
+    private int TASKS_FINISHED = 0;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +54,41 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
         VERSAO = getVersionCode();
         progressoMain = (ProgressBar)findViewById(R.id.progressoMain);
-        progressoMain.setVisibility(View.GONE);
-        TaskDownloadAll downloadAll = new TaskDownloadAll(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),progressoMain);
-        downloadAll.execute();
+        sharedPref = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
+        Ferramenta.setSharedPref(sharedPref);
+        atualizarDados();
+        iniciarBroadCast();
+        TaskDownloadPrae dPrae = new TaskDownloadPrae(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"https://sci02-ter-jne.ufca.edu.br/webapi/anuario/prae",localBroadcastManager);
+        TaskDownloadPrograd dPrograd = new TaskDownloadPrograd(DatabaseClient.getInstance(getApplicationContext()).getAppDatabase(),"https://sci02-ter-jne.ufca.edu.br/webapi/anuario/prograd",localBroadcastManager);
+        dPrae.execute();
+        dPrograd.execute();
         try {
             run("https://play.google.com/store/apps/details?id=pet.yoko.apps.cimaiapp", 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void atualizarDados() {
+        //VERIFICANDO SE É NECESSÁRIO ATUALIZAR O BANCO DE DADOS
+    }
+
+    private void iniciarBroadCast() {
+        progressoMain.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+        progressoMain.setVisibility(View.VISIBLE);
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        myBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                TASKS_FINISHED++;
+                if (TASKS_FINISHED==MAX_TASKS) {
+                    progressoMain.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    progressoMain.setVisibility(View.GONE);
+                }
+            }
+        };
+        myFilter = new IntentFilter("broadcast-terminou-download");
+        localBroadcastManager.registerReceiver(myBroadcastReceiver, myFilter);
     }
 
     public int getVersionCode() {

@@ -1,6 +1,10 @@
 package pet.yoko.apps.cimaiapp.tasks;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.IOException;
 
@@ -14,10 +18,12 @@ public abstract class TaskDownload extends AsyncTask <Void,Void,Void> {
     protected AppDatabase db;
     protected OkHttpClient client = new OkHttpClient();
     protected String url;
+    protected LocalBroadcastManager broadcast;
 
-    protected TaskDownload(AppDatabase db, String url) {
+    protected TaskDownload(AppDatabase db, String url,LocalBroadcastManager broadcast) {
         this.db = db;
         this.url = url;
+        this.broadcast = broadcast;
     }
 
     private String run(String url){
@@ -44,6 +50,7 @@ public abstract class TaskDownload extends AsyncTask <Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        int a = 1;
+        Intent myIntent = new Intent("broadcast-terminou-download");
+        broadcast.sendBroadcast(myIntent);
     }
 }
